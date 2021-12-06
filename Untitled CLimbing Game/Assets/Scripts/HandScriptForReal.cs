@@ -104,13 +104,6 @@ public class HandScriptForReal : MonoBehaviour
             float yPosDir = yPos / mag;
 
             transform.position = new Vector3(rotationPoint.x + xPosDir * distance, rotationPoint.y + yPosDir * distance, this.transform.position.z);
-
-            Debug.Log("Hand Control is on, " + "handControl: " + handControl);
-        }
-
-        else
-        {
-            Debug.Log("Hand Control is off, " + "handControl: " + handControl);
         }
     }
 

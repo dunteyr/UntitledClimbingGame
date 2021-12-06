@@ -5,6 +5,7 @@ using UnityEngine;
 public class MovementScript : MonoBehaviour
 {
     public AbilityMenuScript abilityMenu;
+    private HandScriptForReal handScript;
 
     public Rigidbody2D player;
     public CircleCollider2D ground_Check;
@@ -19,7 +20,7 @@ public class MovementScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        handScript = GetComponentInChildren<HandScriptForReal>();
     }
 
     // Update is called once per frame
