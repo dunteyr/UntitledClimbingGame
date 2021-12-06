@@ -24,7 +24,6 @@ public class HandScriptForReal : MonoBehaviour
     private bool leftMouseClicked;
     private bool rightMouseClicked;
     
-    // Start is called before the first frame update
     void Start()
     {
         spriteRend = gameObject.GetComponent<SpriteRenderer>();
