@@ -23,11 +23,14 @@ public class HandScriptForReal : MonoBehaviour
 
     private bool leftMouseClicked;
     private bool rightMouseClicked;
+
+    private bool handControl;
     
     void Start()
     {
         spriteRend = gameObject.GetComponent<SpriteRenderer>();
         handCollider = gameObject.GetComponent<Collider2D>();
+        handControl = true;
     }
 
     private void Update()
@@ -38,11 +41,10 @@ public class HandScriptForReal : MonoBehaviour
 
     void FixedUpdate()
     {
-
-        PointHandToMouse(true);
+        PointHandToMouse();
 
         //if player right clicks while holding something (has a hingejoint component) let go of it
-        if(rightMouseClicked && handHingeJoint != null)
+        if (rightMouseClicked && handHingeJoint != null)
         {
             rightMouseClicked = false;
             LetGo(handHingeJoint);
@@ -82,7 +84,7 @@ public class HandScriptForReal : MonoBehaviour
         }
     }
 
-    private void PointHandToMouse(bool handControl)
+    private void PointHandToMouse()
     {
         //parameter used to turn on and off handControl with function call
         if (handControl)
@@ -187,7 +189,9 @@ public class HandScriptForReal : MonoBehaviour
                 terrainHingeJoint.autoConfigureConnectedAnchor = false;
                 terrainHingeJoint.anchor = anchorPoint;
 
-                //change hand from kinematic to dynamic so it is physics affected
+                //turn off hand control
+                //and change hand from kinematic to dynamic so it is physics affected
+                handControl = false;
                 handRigidBody.bodyType = RigidbodyType2D.Dynamic;
 
                 //turn on the players hingejoint that is attached to the hand
@@ -226,6 +230,9 @@ public class HandScriptForReal : MonoBehaviour
                 //turn off the players hingejoint that is attached to the hand
                 HingeJoint2D playerToHandJoint = player.GetComponent<HingeJoint2D>();
                 playerToHandJoint.enabled = false;
+
+                //let mouse control hand again
+                handControl = true;
 
                 //add the rotation restraint to the player (stop ragdoll)
                 player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
