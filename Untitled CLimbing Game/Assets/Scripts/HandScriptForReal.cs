@@ -32,6 +32,33 @@ public class HandScriptForReal : MonoBehaviour
 
     private void Update()
     {
+        ManageInput();
+    }
+
+
+    void FixedUpdate()
+    {
+
+        PointHandToMouse(true);
+
+        //if player right clicks while holding something (has a hingejoint component) let go of it
+        if(rightMouseClicked && handHingeJoint != null)
+        {
+            rightMouseClicked = false;
+            LetGo(handHingeJoint);
+        }
+
+        if(rightMouseClicked && terrainHingeJoint != null)
+        {
+            rightMouseClicked = false;
+            LetGo(terrainHingeJoint);
+        }
+        
+
+    }
+
+    private void ManageInput()
+    {
         //Left Mouse Click
         if (Input.GetMouseButtonDown(0))
         {
@@ -55,42 +82,34 @@ public class HandScriptForReal : MonoBehaviour
         }
     }
 
-
-    void FixedUpdate()
+    private void PointHandToMouse(bool handControl)
     {
-        
-        Vector2 mousePosition = Input.mousePosition;
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-
-        playerPosition = player.transform.position;
-        //rotation point is the player position with the offset added
-        rotationPoint = new Vector2(playerPosition.x, playerPosition.y + rotationPointOffset);
-
-        float xPos = mousePosition.x - rotationPoint.x;
-        float yPos = mousePosition.y - rotationPoint.y;
-
-        float mag = Mathf.Sqrt(xPos * xPos + yPos * yPos);
-        float xPosDir = xPos / mag;
-        float yPosDir = yPos / mag;
-
-        transform.position = new Vector3(rotationPoint.x + xPosDir * distance, rotationPoint.y + yPosDir * distance, this.transform.position.z);
-
-        //Debug.Log(xPos + " " + yPos + " " + angle);
-
-        //if player right clicks while holding something (has a hingejoint component) let go of it
-        if(rightMouseClicked && handHingeJoint != null)
+        //parameter used to turn on and off handControl with function call
+        if (handControl)
         {
-            rightMouseClicked = false;
-            LetGo(handHingeJoint);
+            Vector2 mousePosition = Input.mousePosition;
+            mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+
+            playerPosition = player.transform.position;
+            //rotation point is the player position with the offset added
+            rotationPoint = new Vector2(playerPosition.x, playerPosition.y + rotationPointOffset);
+
+            float xPos = mousePosition.x - rotationPoint.x;
+            float yPos = mousePosition.y - rotationPoint.y;
+
+            float mag = Mathf.Sqrt(xPos * xPos + yPos * yPos);
+            float xPosDir = xPos / mag;
+            float yPosDir = yPos / mag;
+
+            transform.position = new Vector3(rotationPoint.x + xPosDir * distance, rotationPoint.y + yPosDir * distance, this.transform.position.z);
+
+            Debug.Log("Hand Control is on, " + "handControl: " + handControl);
         }
 
-        if(rightMouseClicked && terrainHingeJoint != null)
+        else
         {
-            rightMouseClicked = false;
-            LetGo(terrainHingeJoint);
+            Debug.Log("Hand Control is off, " + "handControl: " + handControl);
         }
-        
-
     }
 
     private void OnTriggerStay2D(Collider2D collision)
