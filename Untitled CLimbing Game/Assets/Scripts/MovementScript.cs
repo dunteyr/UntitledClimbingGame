@@ -89,4 +89,16 @@ public class MovementScript : MonoBehaviour
     {
         player.AddForce(transform.up * jumpForce);
     }
+
+    //called in HandSriptForReal when letting go from terrain
+    public void fixPlayerRotation()
+    {
+        Vector3 playerRotation = transform.eulerAngles;
+
+        //desired angle is 0 degrees so rotate z axis by -playerRotation
+        transform.Rotate(0.0f, 0.0f, playerRotation.z * -1, Space.World);
+
+        //add the rotation restraint to the player (stop ragdoll)
+        player.constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
 }

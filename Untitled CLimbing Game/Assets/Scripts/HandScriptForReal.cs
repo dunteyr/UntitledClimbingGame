@@ -227,8 +227,8 @@ public class HandScriptForReal : MonoBehaviour
                 //let mouse control hand again
                 handControl = true;
 
-                //add the rotation restraint to the player (stop ragdoll)
-                player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+                //makes player stand upright and constrains rotation
+                player.GetComponent<MovementScript>().fixPlayerRotation();
 
                 handCollider.isTrigger = true;
             }
