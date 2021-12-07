@@ -179,7 +179,7 @@ public class HandScriptForReal : MonoBehaviour
                 terrainHingeJoint = collision.gameObject.AddComponent<HingeJoint2D>();
 
                 //configure hinge joint and attach to terrain
-                terrainHingeJoint.autoConfigureConnectedAnchor = false;
+                terrainHingeJoint.autoConfigureConnectedAnchor = true;
                 terrainHingeJoint.anchor = anchorPoint;
 
                 //turn off hand control

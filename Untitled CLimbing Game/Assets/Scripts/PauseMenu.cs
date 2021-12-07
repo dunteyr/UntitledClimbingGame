@@ -8,12 +8,16 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenu;
     public bool pauseMenuActive = false;
 
+    private AbilityMenuScript abilityMenu;
+
     // Start is called before the first frame update
     void Start()
     {
         //set the UI to be gone by default
         pauseMenu.SetActive(false);
         pauseMenuActive = false;
+
+        abilityMenu = GetComponent<AbilityMenuScript>();
     }
 
     // Update is called once per frame
@@ -21,7 +25,22 @@ public class PauseMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            TogglePauseMenu();
+
+            if(abilityMenu.abilityMenuActive == true && pauseMenuActive == false)
+            {
+                TogglePauseMenu();
+            }
+            else if (abilityMenu.abilityMenuActive == false && pauseMenuActive == false)
+            {
+                TogglePauseMenu();
+                abilityMenu.ToggleAbilityMenu();
+            }
+            else if(abilityMenu.abilityMenuActive == true && pauseMenuActive == true)
+            {
+                TogglePauseMenu();
+                abilityMenu.ToggleAbilityMenu();
+            }
+            
         }
     }
 
