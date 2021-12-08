@@ -7,6 +7,7 @@ TagManager:
   - Ground
   - Object
   - Hand
+  - Rope
   layers:
   - Default
   - TransparentFX
