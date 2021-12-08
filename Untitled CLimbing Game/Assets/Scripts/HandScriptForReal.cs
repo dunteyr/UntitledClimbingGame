@@ -18,6 +18,7 @@ public class HandScriptForReal : MonoBehaviour
     private Color defaultColor = Color.white;
     [SerializeField] private Color grabbableColor = Color.green;
     [SerializeField] private Color grabColor = Color.blue;
+    public bool isGrabbing;
 
     private HingeJoint2D handHingeJoint;
     private HingeJoint2D terrainHingeJoint;
@@ -127,6 +128,7 @@ public class HandScriptForReal : MonoBehaviour
 
             if (leftMouseClicked)
             {
+                isGrabbing = true;
                 leftMouseClicked = false;
                 //turning off trigger so ontriggerstay doesnt execute while grabbing
                 handCollider.isTrigger = false;
@@ -137,14 +139,19 @@ public class HandScriptForReal : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        spriteRend.color = defaultColor;
+        if(isGrabbing)
+        {
+            spriteRend.color = grabColor;
+        }    
+        else
+        {
+            spriteRend.color = defaultColor;
+        }
     }
 
     //called in OnTriggerStay so player can grab ground
-    //make sure to turn on isTrigger after finished grabbing
     private void Grab(Collider2D collision)
     {
-        spriteRend.color = grabColor;
         //if there is already a joint on the hand, remove it
         if(gameObject.GetComponent<HingeJoint2D>() != null)
         {
@@ -214,6 +221,8 @@ public class HandScriptForReal : MonoBehaviour
 
     private void LetGo(HingeJoint2D jointToLetGo)
     {
+        spriteRend.color = defaultColor;
+        isGrabbing = false;
         if(jointToLetGo == null)
         {
             Debug.LogWarning("There is no hinge joint attached yet LetGo() was executed");
