@@ -15,6 +15,7 @@ public class MovementScript : MonoBehaviour
     [SerializeField] private float force = 10;
     [SerializeField] private float inAirForce = 5;
     [SerializeField] private float jumpForce = 50;
+    [SerializeField] private float maxSpeed = 13;
 
 
     // Start is called before the first frame update
@@ -34,34 +35,8 @@ public class MovementScript : MonoBehaviour
     }
 
     void FixedUpdate()
-    {      
-
-        if (horizontalInput > 0)
-        {
-            if (isGrounded)
-            {
-                player.AddForce(transform.right * force * horizontalInput);
-            }
-
-            else if(isGrounded == false)
-            {
-                player.AddForce(transform.right * inAirForce * horizontalInput);
-            }
-            
-        }
-        else if(horizontalInput < 0)
-        {
-            if (isGrounded)
-            {
-                player.AddForce(transform.right * force * horizontalInput);
-            }
-
-            //player has less control when in the air
-            else if (isGrounded == false)
-            {
-                player.AddForce(transform.right * inAirForce * horizontalInput);
-            }
-        }
+    {
+        MovePlayer();
 
         //if player jumps while in midair
         if(isGrounded == false && jumpInput)
@@ -88,6 +63,36 @@ public class MovementScript : MonoBehaviour
     void Jump()
     {
         player.AddForce(transform.up * jumpForce);
+    }
+
+    private void MovePlayer()
+    {
+        
+        //only accept input and add force to player if he is slower than max speed
+        if(player.velocity.magnitude < maxSpeed)
+        {
+            if (horizontalInput > 0)
+            {
+                if (isGrounded)
+                {
+                    player.AddForce(transform.right * force * horizontalInput);
+                }
+
+            }
+            else if (horizontalInput < 0)
+            {
+                if (isGrounded)
+                {
+                    player.AddForce(transform.right * force * horizontalInput);
+                } 
+            }
+        }
+
+        //whether faster than max speed or not if hes in the air he has slight right-left control
+        if (isGrounded == false)
+        {
+            player.AddForce(transform.right * inAirForce * horizontalInput);
+        }
     }
 
     //called in HandSriptForReal when letting go from terrain
