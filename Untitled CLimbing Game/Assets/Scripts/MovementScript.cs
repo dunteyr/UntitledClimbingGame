@@ -10,7 +10,7 @@ public class MovementScript : MonoBehaviour
     public Rigidbody2D player;
     public CircleCollider2D ground_Check;
     private float horizontalInput;
-    private bool jumpInput;
+    public bool jumpInput;
     public bool isGrounded;
     [SerializeField] private float force = 10;
     [SerializeField] private float inAirForce = 5;
@@ -60,7 +60,7 @@ public class MovementScript : MonoBehaviour
         }
     }
 
-    void Jump()
+    public void Jump()
     {
         player.AddForce(transform.up * jumpForce);
     }

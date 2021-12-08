@@ -5,6 +5,7 @@ using UnityEngine;
 public class HandScriptForReal : MonoBehaviour
 {
     public AbilityMenuScript abilityMenu;
+    private MovementScript movemementScript;
 
     private Collider2D handCollider;
     public GameObject player;
@@ -31,6 +32,8 @@ public class HandScriptForReal : MonoBehaviour
         spriteRend = gameObject.GetComponent<SpriteRenderer>();
         handCollider = gameObject.GetComponent<Collider2D>();
         handControl = true;
+
+        movemementScript = player.GetComponent<MovementScript>();
     }
 
     private void Update()
@@ -54,6 +57,13 @@ public class HandScriptForReal : MonoBehaviour
         {
             rightMouseClicked = false;
             LetGo(terrainHingeJoint);
+        }
+
+        //if player jumps while holding terrain then let go and jump
+        if (movemementScript.jumpInput && terrainHingeJoint != null)
+        {
+            LetGo(terrainHingeJoint);
+            movemementScript.Jump();
         }
         
 
