@@ -12,9 +12,10 @@ public class MovementScript : MonoBehaviour
     private float horizontalInput;
     public bool jumpInput;
     public bool isGrounded;
-    [SerializeField] private float force = 10;
-    [SerializeField] private float inAirForce = 5;
-    [SerializeField] private float jumpForce = 50;
+    [SerializeField] private float force = 18;
+    [SerializeField] private float inAirForce = 6;
+    [SerializeField] public float defaultJumpForce = 700;
+    [SerializeField] public float grabJumpForce = 550;
     [SerializeField] private float maxSpeed = 13;
 
 
@@ -49,20 +50,22 @@ public class MovementScript : MonoBehaviour
             //does jump if Infinite Jump is on
             else if (abilityMenu.infiniteJumpActive)
             {
-                Jump();
+                Jump(defaultJumpForce);
                 jumpInput = false;
             }
         }
         else if (isGrounded && jumpInput)
         {
-            Jump();
+            Jump(defaultJumpForce);
             jumpInput = false;
         }
     }
 
-    public void Jump()
+    public void Jump(float jumpForce)
     {
+        //force is relative to player's "up" not the worlds "up"
         player.AddForce(transform.up * jumpForce);
+        Debug.Log("Jumped, Jump Force: " + jumpForce);
     }
 
     private void MovePlayer()
