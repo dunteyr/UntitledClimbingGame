@@ -65,7 +65,6 @@ public class MovementScript : MonoBehaviour
     {
         //force is relative to player's "up" not the worlds "up"
         player.AddForce(transform.up * jumpForce);
-        Debug.Log("Jumped, Jump Force: " + jumpForce);
     }
 
     private void MovePlayer()

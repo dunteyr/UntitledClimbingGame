@@ -22,6 +22,7 @@ public class HandScriptForReal : MonoBehaviour
 
     private HingeJoint2D handHingeJoint;
     private HingeJoint2D terrainHingeJoint;
+    private HingeJoint2D ropeHingeJoint;
 
     private bool leftMouseClicked;
     private bool rightMouseClicked;
@@ -39,6 +40,7 @@ public class HandScriptForReal : MonoBehaviour
 
     private void Update()
     {
+        //Getting input is more accurate in Update()
         ManageInput();
     }
 
@@ -47,27 +49,7 @@ public class HandScriptForReal : MonoBehaviour
     {
         PointHandToMouse();
 
-        //if player right clicks while holding something (has a hingejoint component) let go of it
-        if (rightMouseClicked && handHingeJoint != null)
-        {
-            rightMouseClicked = false;
-            LetGo(handHingeJoint);
-        }
-
-        if(rightMouseClicked && terrainHingeJoint != null)
-        {
-            rightMouseClicked = false;
-            LetGo(terrainHingeJoint);
-        }
-
-        //if player jumps while holding terrain then let go and jump
-        if (movementScript.jumpInput && terrainHingeJoint != null)
-        {
-            LetGo(terrainHingeJoint);
-            movementScript.Jump(movementScript.grabJumpForce);
-        }
-        
-
+        ManageLettingGo();
     }
 
     private void ManageInput()
@@ -118,11 +100,48 @@ public class HandScriptForReal : MonoBehaviour
         }
     }
 
+    //Calls LetGo() function depending on certain inputs and hingejoints
+    private void ManageLettingGo()
+    {
+        //if player right clicks while holding something (has a hingejoint component) let go of it
+        if (rightMouseClicked && handHingeJoint != null)
+        {
+            rightMouseClicked = false;
+            LetGo(handHingeJoint);
+        }
+
+        if (rightMouseClicked && terrainHingeJoint != null)
+        {
+            rightMouseClicked = false;
+            LetGo(terrainHingeJoint);
+        }
+
+        if (rightMouseClicked && ropeHingeJoint != null)
+        {
+            rightMouseClicked = false;
+            LetGo(ropeHingeJoint);
+        }
+
+        //if player jumps while holding terrain then let go and jump
+        if (movementScript.jumpInput && terrainHingeJoint != null)
+        {
+            LetGo(terrainHingeJoint);
+            movementScript.Jump(movementScript.grabJumpForce);
+        }
+
+        //if player jumps while holding rope then let go and jump
+        if (movementScript.jumpInput && ropeHingeJoint != null)
+        {
+            LetGo(ropeHingeJoint);
+            movementScript.Jump(movementScript.grabJumpForce);
+        }
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         
 
-        if(collision.tag == "Ground" || collision.tag == "Object")
+        if(collision.tag == "Ground" || collision.tag == "Object" || collision.tag == "Rope")
         {
             spriteRend.color = grabbableColor;
 
@@ -178,8 +197,8 @@ public class HandScriptForReal : MonoBehaviour
         }
         
         //as opposed to objects, if the player grabs static terrain, the hinge joint component is added to
-        //the terrain rather than the hand because the players hangs from terrain. Terrain doesnt hang from the hand
-        if(collision.tag == ("Ground"))
+        //the terrain rather than the hand because the players hangs from terrain. Terrain doesn't hang from the hand
+        if(collision.tag == "Ground")
         {
             //check if the Ground has a composite collider
             if(collision.GetComponent<CompositeCollider2D>() == null)
@@ -217,6 +236,49 @@ public class HandScriptForReal : MonoBehaviour
 
             }
         }
+
+        if (collision.tag == "Rope")
+        {
+            //check if the Ground has a composite collider
+            if (collision.GetComponent<BoxCollider2D>() == null)
+            {
+                Debug.LogError("The object with tag: Rope, has no BoxCollider to grab");
+            }
+            else
+            {
+                BoxCollider2D ropeCollider = collision.GetComponent<BoxCollider2D>();
+                //Vector2 anchorPoint = ropeCollider.ClosestPoint(gameObject.transform.position);
+                Rigidbody2D handRigidBody = gameObject.GetComponent<Rigidbody2D>();
+
+                //add hinge joint to rope
+                ropeHingeJoint = collision.gameObject.AddComponent<HingeJoint2D>();
+
+                //configure hinge joint and attach to rope
+                ropeHingeJoint.autoConfigureConnectedAnchor = true;
+                ropeHingeJoint.anchor = new Vector2 (0, 0);
+
+                //turn off hand control
+                //and change hand from kinematic to dynamic so it is physics affected
+                handControl = false;
+                handRigidBody.bodyType = RigidbodyType2D.Dynamic;
+
+                //turn on the players hingejoint that is attached to the hand
+                HingeJoint2D playerToHandJoint = player.GetComponent<HingeJoint2D>();
+                playerToHandJoint.enabled = true;
+
+                //remove the rotation restraint from the player (ragdoll)
+                player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+
+                //attach ropes hingejoint to hand
+                ropeHingeJoint.connectedBody = handRigidBody;
+                ropeHingeJoint.connectedAnchor = new Vector2(0, 0);
+
+                Debug.Log("Anchor Point " + ropeCollider.ClosestPoint(gameObject.transform.position));
+                Debug.Log("Rope Collider: " + ropeCollider);
+                Debug.Log("hand position: " + gameObject.transform.localPosition);
+
+            }
+        }
     }
 
     private void LetGo(HingeJoint2D jointToLetGo)
@@ -235,6 +297,26 @@ public class HandScriptForReal : MonoBehaviour
             if(jointToLetGo == terrainHingeJoint)
             {
                 Destroy(terrainHingeJoint);
+
+                Rigidbody2D handRigidBody = gameObject.GetComponent<Rigidbody2D>();
+                handRigidBody.bodyType = RigidbodyType2D.Kinematic;
+
+                //turn off the players hingejoint that is attached to the hand
+                HingeJoint2D playerToHandJoint = player.GetComponent<HingeJoint2D>();
+                playerToHandJoint.enabled = false;
+
+                //let mouse control hand again
+                handControl = true;
+
+                //makes player stand upright and constrains rotation
+                player.GetComponent<MovementScript>().fixPlayerRotation();
+
+                handCollider.isTrigger = true;
+            }
+
+            else if(jointToLetGo == ropeHingeJoint)
+            {
+                Destroy(ropeHingeJoint);
 
                 Rigidbody2D handRigidBody = gameObject.GetComponent<Rigidbody2D>();
                 handRigidBody.bodyType = RigidbodyType2D.Kinematic;
