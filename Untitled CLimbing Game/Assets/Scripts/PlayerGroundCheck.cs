@@ -32,7 +32,7 @@ public class PlayerGroundCheck : MonoBehaviour
         //OnCollisionEnter2D only reads one collision at a time
         //so when touching multiple objects one of them could trigger the exit function and mess everything up
         //a list is used to keep track of collisions
-        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Object")
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Object" || collision.gameObject.tag == "Rope")
         {
             movementScript.isGrounded = true;
             collisionList.Add(collision);
