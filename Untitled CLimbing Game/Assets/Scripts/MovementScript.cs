@@ -39,8 +39,13 @@ public class MovementScript : MonoBehaviour
     {
         MovePlayer();
 
+        ManageJump();
+    }
+
+    private void ManageJump()
+    {
         //if player jumps while in midair
-        if(isGrounded == false && jumpInput)
+        if (isGrounded == false && jumpInput)
         {
             //doesnt jump if Infinite Jump is off
             if (abilityMenu.infiniteJumpActive == false)
