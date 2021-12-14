@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class AbilityMenuScript : MonoBehaviour
 {
+    private Component[] componentList;
+
     //script is for canvas but this object is the UI panel child
     public GameObject abilityMenu;
     public bool abilityMenuActive = false;
@@ -15,6 +17,7 @@ public class AbilityMenuScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        FindMenu();
         //set the UI to be gone by default
         abilityMenu.SetActive(false);
         abilityMenuActive = false;
@@ -30,6 +33,20 @@ public class AbilityMenuScript : MonoBehaviour
         }
 
 
+    }
+    private void FindMenu()
+    {
+        //get a list of every Canvas Renderer in menu's children
+        componentList = GetComponentsInChildren<CanvasRenderer>();
+
+        //check every component in that list for the abilities menu and set it equal to abilitiesMenu
+        for (int i = 0; i < componentList.Length; i++)
+        {
+            if (componentList[i].gameObject.tag == "Abilities")
+            {
+                abilityMenu = componentList[i].gameObject;
+            }
+        }
     }
 
     public void ToggleAbilityMenu()

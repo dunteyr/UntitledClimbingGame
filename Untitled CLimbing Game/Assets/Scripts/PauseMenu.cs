@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
 {
+    private Component[] componentList;
 
     public GameObject pauseMenu;
     public bool pauseMenuActive = false;
@@ -13,6 +14,7 @@ public class PauseMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        FindMenu();
         //set the UI to be gone by default
         pauseMenu.SetActive(false);
         pauseMenuActive = false;
@@ -41,6 +43,20 @@ public class PauseMenu : MonoBehaviour
                 abilityMenu.ToggleAbilityMenu();
             }
             
+        }
+    }
+    private void FindMenu()
+    {
+        //get a list of every Canvas Renderer in menu's children
+        componentList = GetComponentsInChildren<CanvasRenderer>();
+
+        //check every component in that list for the abilities menu and set it equal to abilitiesMenu
+        for (int i = 0; i < componentList.Length; i++)
+        {
+            if (componentList[i].gameObject.tag == "Pause")
+            {
+                pauseMenu = componentList[i].gameObject;
+            }
         }
     }
 

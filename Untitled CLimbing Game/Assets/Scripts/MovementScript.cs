@@ -23,6 +23,7 @@ public class MovementScript : MonoBehaviour
     void Start()
     {
         handScript = GetComponentInChildren<HandScriptForReal>();
+        abilityMenu = GameObject.FindWithTag("Menu").GetComponent<AbilityMenuScript>();
     }
 
     // Update is called once per frame

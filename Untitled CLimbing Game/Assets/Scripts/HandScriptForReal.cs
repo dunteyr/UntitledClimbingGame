@@ -26,6 +26,7 @@ public class HandScriptForReal : MonoBehaviour
 
     private bool leftMouseClicked;
     private bool rightMouseClicked;
+    private bool jumpInput;
 
     private bool handControl;
     
@@ -38,10 +39,12 @@ public class HandScriptForReal : MonoBehaviour
         movementScript = player.GetComponent<MovementScript>();
     }
 
-    private void Update()
+    void Update()
     {
         //Getting input is more accurate in Update()
         ManageInput();
+
+
     }
 
 
@@ -75,6 +78,16 @@ public class HandScriptForReal : MonoBehaviour
         {
             rightMouseClicked = false;
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            jumpInput = true;
+        }
+
+        else if (Input.GetKeyUp(KeyCode.Space))
+        {
+            jumpInput = false;
+        }
     }
 
     private void PointHandToMouse()
@@ -101,7 +114,7 @@ public class HandScriptForReal : MonoBehaviour
     }
 
     //Calls LetGo() function depending on certain inputs and hingejoints
-    private void ManageLettingGo()
+    public void ManageLettingGo()
     {
         //if player right clicks while holding something (has a hingejoint component) let go of it
         if (rightMouseClicked && handHingeJoint != null)
@@ -123,17 +136,19 @@ public class HandScriptForReal : MonoBehaviour
         }
 
         //if player jumps while holding terrain then let go and jump
-        if (movementScript.jumpInput && terrainHingeJoint != null)
+        if (jumpInput && terrainHingeJoint != null)
         {
             LetGo(terrainHingeJoint);
             movementScript.Jump(movementScript.grabJumpForce);
+            jumpInput = false;
         }
 
         //if player jumps while holding rope then let go and jump
-        if (movementScript.jumpInput && ropeHingeJoint != null)
+        if (jumpInput && ropeHingeJoint != null)
         {
             LetGo(ropeHingeJoint);
             movementScript.Jump(movementScript.grabJumpForce);
+            jumpInput = false;
         }
     }
 
@@ -149,6 +164,8 @@ public class HandScriptForReal : MonoBehaviour
             {
                 isGrabbing = true;
                 leftMouseClicked = false;
+                //so player cant hold jump while pressing left click and mess stuff up
+                jumpInput = false;
                 //turning off trigger so ontriggerstay doesnt execute while grabbing
                 handCollider.isTrigger = false;
                 Grab(collision);

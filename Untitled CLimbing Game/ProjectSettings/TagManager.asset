@@ -8,6 +8,11 @@ TagManager:
   - Object
   - Hand
   - Rope
+  - Pause
+  - Abilities
+  - SpawnPoint
+  - Menu
+  - HUD
   layers:
   - Default
   - TransparentFX
