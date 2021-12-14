@@ -289,11 +289,6 @@ public class HandScriptForReal : MonoBehaviour
                 //attach ropes hingejoint to hand
                 ropeHingeJoint.connectedBody = handRigidBody;
                 ropeHingeJoint.connectedAnchor = new Vector2(0, 0);
-
-                Debug.Log("Anchor Point " + ropeCollider.ClosestPoint(gameObject.transform.position));
-                Debug.Log("Rope Collider: " + ropeCollider);
-                Debug.Log("hand position: " + gameObject.transform.localPosition);
-
             }
         }
     }
