@@ -10,14 +10,12 @@ public class PlayerHealth : MonoBehaviour
     public float playerMaxHealth;
     public float playerCurrentHealth;
     public bool playerIsDead;
-    private CapsuleCollider2D player;
 
     void Start()
     {
         respawnMenu = GameObject.FindGameObjectWithTag("Menu").GetComponentInChildren<RespawnMenu>();
         headsUpDisplay = GameObject.FindGameObjectWithTag("HUD").GetComponent<HeadsUpDisplay>();
 
-        player = GetComponent<CapsuleCollider2D>();
         playerIsDead = false;
         playerMaxHealth = 100;
         playerCurrentHealth = playerMaxHealth;
@@ -41,14 +39,14 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    //can damage the player with a specific damage amount or by taking a percentage of health
+    //can damage the player with a specific damage amount or by taking a percentage of max health
     public void DamagePlayer(float damageAmount, bool isPercentage = false)
     {
         if (isPercentage)
         {
             //damageAmount will be a percentage of health taken
             float damagePercentage = damageAmount * 0.01f;
-            playerCurrentHealth -= playerCurrentHealth * damagePercentage;
+            playerCurrentHealth -= playerMaxHealth * damagePercentage;
             headsUpDisplay.SetHealthBar(playerCurrentHealth);
         }
 

@@ -6,17 +6,24 @@ public class MovementScript : MonoBehaviour
 {
     public AbilityMenuScript abilityMenu;
     private HandScriptForReal handScript;
+    private PlayerHealth playerHealth;
 
     public Rigidbody2D player;
+    private CapsuleCollider2D playerCollider;
     public CircleCollider2D ground_Check;
+
     private float horizontalInput;
     public bool jumpInput;
     public bool isGrounded;
+    public bool takeFallDamage = false;
+
     [SerializeField] private float force = 18;
     [SerializeField] private float inAirForce = 6;
     [SerializeField] public float defaultJumpForce = 700;
     [SerializeField] public float grabJumpForce = 550;
     [SerializeField] private float maxSpeed = 13;
+    [SerializeField] private float fallDamageThreshold = 24;
+    [SerializeField] public float fallDeathThreshold = 40;
 
 
     // Start is called before the first frame update
@@ -24,6 +31,8 @@ public class MovementScript : MonoBehaviour
     {
         handScript = GetComponentInChildren<HandScriptForReal>();
         abilityMenu = GameObject.FindWithTag("Menu").GetComponent<AbilityMenuScript>();
+        playerHealth = GetComponent<PlayerHealth>();
+        playerCollider = GetComponent<CapsuleCollider2D>();
     }
 
     // Update is called once per frame
@@ -41,6 +50,8 @@ public class MovementScript : MonoBehaviour
         MovePlayer();
 
         ManageJump();
+
+        //DetectFallDamage();
     }
 
     private void ManageJump()
@@ -113,5 +124,34 @@ public class MovementScript : MonoBehaviour
 
         //add the rotation restraint to the player (stop ragdoll)
         player.constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        FallDamage(collision);
+    }
+
+    void FallDamage(Collision2D collision)
+    {
+        //when the collision speed is over the fall damage min
+        if (collision.relativeVelocity.magnitude >= fallDamageThreshold)
+        {
+            Debug.Log("Fall damage");
+            float collisionSpeed = collision.relativeVelocity.magnitude;
+
+            //difference between the min speed to get hurt and the death speed (both changeable)
+            float damageRange = fallDeathThreshold - fallDamageThreshold;
+            //how much over the min speed the collision speed was
+            float speedOverage = collisionSpeed - fallDamageThreshold;
+
+            //divide the range of min damage to death damage and the number over the min to find the percent overage
+            float damageRatio = speedOverage / damageRange;
+            //convert the fraction to a number between 1 and 100 for the DamagePlayer function
+            float damagePercentage = damageRatio * 100;
+
+            //apply that percent overage to the players health in the form of damage
+            playerHealth.DamagePlayer(damagePercentage, true);
+            Debug.Log("Damage Percentage: " + damagePercentage);
+        }
     }
 }
