@@ -243,7 +243,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilityMenu: {fileID: 0}
-  mainCamera: {fileID: 0}
+  cameraBrain: {fileID: 0}
+  virtualCamera: {fileID: 0}
+  currentLensSettings:
+    FieldOfView: 0
+    OrthographicSize: 0
+    NearClipPlane: 0
+    FarClipPlane: 0
+    Dutch: 0
+    ModeOverride: 0
+    LensShift: {x: 0, y: 0}
+    GateFit: 0
+    m_SensorSize: {x: 0, y: 0}
+  newLensSettings:
+    FieldOfView: 0
+    OrthographicSize: 0
+    NearClipPlane: 0
+    FarClipPlane: 0
+    Dutch: 0
+    ModeOverride: 0
+    LensShift: {x: 0, y: 0}
+    GateFit: 0
+    m_SensorSize: {x: 0, y: 0}
+  defaultOrthoSize: 10
+  maxOrthoSize: 15
+  orthoAmount: 0.3
+  orthoTriggerPoint: 16
+  smoothTime: 1
 --- !u!233 &4437752475288588648
 HingeJoint2D:
   m_ObjectHideFlags: 0

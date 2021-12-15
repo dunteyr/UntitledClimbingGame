@@ -13,6 +13,7 @@ TagManager:
   - SpawnPoint
   - Menu
   - HUD
+  - Vcam1
   layers:
   - Default
   - TransparentFX
