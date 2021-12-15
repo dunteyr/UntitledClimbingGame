@@ -6,6 +6,7 @@ public class PlayerHealth : MonoBehaviour
 {
     private RespawnMenu respawnMenu;
     private HeadsUpDisplay headsUpDisplay;
+    private MovementScript movementScript;
 
     public float playerMaxHealth;
     public float playerCurrentHealth;
@@ -15,6 +16,7 @@ public class PlayerHealth : MonoBehaviour
     {
         respawnMenu = GameObject.FindGameObjectWithTag("Menu").GetComponentInChildren<RespawnMenu>();
         headsUpDisplay = GameObject.FindGameObjectWithTag("HUD").GetComponent<HeadsUpDisplay>();
+        movementScript = GetComponent<MovementScript>();
 
         playerIsDead = false;
         playerMaxHealth = 100;
@@ -60,7 +62,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void KillPlayer()
     {
-        gameObject.SetActive(false);
+        movementScript.SetRagdoll(true);
         playerIsDead = true;
         respawnMenu.OnPlayerDeath();
     }

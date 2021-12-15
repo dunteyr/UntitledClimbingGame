@@ -24,27 +24,25 @@ public class SpawnBeacon : MonoBehaviour
 
     public void RespawnPlayer()
     {
-        if(player.activeInHierarchy)
+        if(playerHealth.playerIsDead == false)
         {
-            //deactivate player if respawn was called and player is active
-            player.SetActive(false);
 
-            Debug.LogWarning("Player was still active in scene. Was deactivated");
+            Debug.LogWarning("Player wasnt dead.");
 
             //move player to spawn point, give him his health back and then activate him
             player.transform.SetPositionAndRotation(transform.position, player.transform.rotation);
+            player.GetComponent<MovementScript>().SetRagdoll(false);
             playerHealth.SetPlayerHealth(playerHealth.playerMaxHealth);
-            player.SetActive(true);
             playerHealth.playerIsDead = false;
 
         }
 
-        else if(player.activeInHierarchy == false)
+        else if(playerHealth.playerIsDead)
         {
             //move player to spawn point, give him his health back and then activate him
             player.transform.SetPositionAndRotation(transform.position, playerRotation);
             playerHealth.SetPlayerHealth(playerHealth.playerMaxHealth);
-            player.SetActive(true);
+            player.GetComponent<MovementScript>().SetRagdoll(false);
             playerHealth.playerIsDead = false;
         }
     }

@@ -122,8 +122,6 @@ public class MovementScript : MonoBehaviour
         //desired angle is 0 degrees so rotate z axis by -playerRotation
         transform.Rotate(0.0f, 0.0f, playerRotation.z * -1, Space.World);
 
-        //add the rotation restraint to the player (stop ragdoll)
-        player.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -152,6 +150,60 @@ public class MovementScript : MonoBehaviour
             //apply that percent overage to the players health in the form of damage
             playerHealth.DamagePlayer(damagePercentage, true);
             Debug.Log("Damage Percentage: " + damagePercentage);
+        }
+    }
+
+    public void SetRagdoll(bool ragdollOn)
+    {
+        if (ragdollOn)
+        {
+            player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+
+            //turn on the players hingejoint that is attached to the hand
+            HingeJoint2D playerToHandJoint = GetComponent<HingeJoint2D>();
+            playerToHandJoint.enabled = true;
+
+            if (handScript.handRigidBody == null)
+            {
+                Debug.LogWarning("Ragdoll was turned on but handRigidBody is null and cant be turned to dynamic");
+            }
+
+            else if(handScript.handRigidBody != null)
+            {
+                handScript.handRigidBody.bodyType = RigidbodyType2D.Dynamic;
+                handScript.handCollider.isTrigger = false;
+                handScript.handControl = false;
+
+                //if the hand is grabbing something while ragdolled its mass needs to stay at 1 
+                if (handScript.isGrabbing) { handScript.handRigidBody.mass = 1; }
+                //otherwise it should be very light so it doesnt pull player around
+                else { handScript.handRigidBody.mass = 0.01f; }
+
+            }
+        }
+
+        else if(ragdollOn == false)
+        {
+            fixPlayerRotation();
+            player.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+            //turn off the players hingejoint that is attached to the hand
+            HingeJoint2D playerToHandJoint = GetComponent<HingeJoint2D>();
+            playerToHandJoint.enabled = false;
+
+            if (handScript.handRigidBody == null)
+            {
+                Debug.LogWarning("Ragdoll was turned off but handRigidBody is null and cant be turned to Kinematic");
+            }
+
+            else if (handScript.handRigidBody != null)
+            {
+                handScript.handRigidBody.bodyType = RigidbodyType2D.Kinematic;
+                //resets the original weight of hand
+                handScript.handRigidBody.mass = 1f;
+                handScript.handCollider.isTrigger = true;
+                handScript.handControl = true;
+            }
         }
     }
 }

@@ -7,7 +7,8 @@ public class HandScriptForReal : MonoBehaviour
     public AbilityMenuScript abilityMenu;
     private MovementScript movementScript;
 
-    private Collider2D handCollider;
+    public Collider2D handCollider;
+    public Rigidbody2D handRigidBody;
     public GameObject player;
     private Vector2 playerPosition;
     private Vector2 rotationPoint;
@@ -28,12 +29,13 @@ public class HandScriptForReal : MonoBehaviour
     private bool rightMouseClicked;
     private bool jumpInput;
 
-    private bool handControl;
+    public bool handControl;
     
     void Start()
     {
         spriteRend = gameObject.GetComponent<SpriteRenderer>();
         handCollider = gameObject.GetComponent<Collider2D>();
+        handRigidBody = gameObject.GetComponent<Rigidbody2D>();
         handControl = true;
 
         movementScript = player.GetComponent<MovementScript>();
@@ -226,7 +228,6 @@ public class HandScriptForReal : MonoBehaviour
             {
                 CompositeCollider2D terrainCollider = collision.GetComponent<CompositeCollider2D>();
                 Vector2 anchorPoint = terrainCollider.ClosestPoint(gameObject.transform.position);
-                Rigidbody2D handRigidBody = gameObject.GetComponent<Rigidbody2D>();
 
                 //add hinge joint to terrain
                 terrainHingeJoint = collision.gameObject.AddComponent<HingeJoint2D>();
@@ -235,17 +236,7 @@ public class HandScriptForReal : MonoBehaviour
                 terrainHingeJoint.autoConfigureConnectedAnchor = true;
                 terrainHingeJoint.anchor = anchorPoint;
 
-                //turn off hand control
-                //and change hand from kinematic to dynamic so it is physics affected
-                handControl = false;
-                handRigidBody.bodyType = RigidbodyType2D.Dynamic;
-
-                //turn on the players hingejoint that is attached to the hand
-                HingeJoint2D playerToHandJoint = player.GetComponent<HingeJoint2D>();
-                playerToHandJoint.enabled = true;
-
-                //remove the rotation restraint from the player (ragdoll)
-                player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+                movementScript.SetRagdoll(true);
 
                 //attach terrains hingejoint to hand
                 terrainHingeJoint.connectedBody = handRigidBody;
@@ -265,7 +256,6 @@ public class HandScriptForReal : MonoBehaviour
             {
                 BoxCollider2D ropeCollider = collision.GetComponent<BoxCollider2D>();
                 //Vector2 anchorPoint = ropeCollider.ClosestPoint(gameObject.transform.position);
-                Rigidbody2D handRigidBody = gameObject.GetComponent<Rigidbody2D>();
 
                 //add hinge joint to rope
                 ropeHingeJoint = collision.gameObject.AddComponent<HingeJoint2D>();
@@ -274,17 +264,7 @@ public class HandScriptForReal : MonoBehaviour
                 ropeHingeJoint.autoConfigureConnectedAnchor = true;
                 ropeHingeJoint.anchor = new Vector2 (0, 0);
 
-                //turn off hand control
-                //and change hand from kinematic to dynamic so it is physics affected
-                handControl = false;
-                handRigidBody.bodyType = RigidbodyType2D.Dynamic;
-
-                //turn on the players hingejoint that is attached to the hand
-                HingeJoint2D playerToHandJoint = player.GetComponent<HingeJoint2D>();
-                playerToHandJoint.enabled = true;
-
-                //remove the rotation restraint from the player (ragdoll)
-                player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+                movementScript.SetRagdoll(true);
 
                 //attach ropes hingejoint to hand
                 ropeHingeJoint.connectedBody = handRigidBody;
@@ -310,40 +290,17 @@ public class HandScriptForReal : MonoBehaviour
             {
                 Destroy(terrainHingeJoint);
 
-                Rigidbody2D handRigidBody = gameObject.GetComponent<Rigidbody2D>();
-                handRigidBody.bodyType = RigidbodyType2D.Kinematic;
+                movementScript.SetRagdoll(false);
 
-                //turn off the players hingejoint that is attached to the hand
-                HingeJoint2D playerToHandJoint = player.GetComponent<HingeJoint2D>();
-                playerToHandJoint.enabled = false;
-
-                //let mouse control hand again
-                handControl = true;
-
-                //makes player stand upright and constrains rotation
-                player.GetComponent<MovementScript>().fixPlayerRotation();
-
-                handCollider.isTrigger = true;
             }
 
             else if(jointToLetGo == ropeHingeJoint)
             {
                 Destroy(ropeHingeJoint);
 
-                Rigidbody2D handRigidBody = gameObject.GetComponent<Rigidbody2D>();
-                handRigidBody.bodyType = RigidbodyType2D.Kinematic;
+                movementScript.SetRagdoll(false);
 
-                //turn off the players hingejoint that is attached to the hand
-                HingeJoint2D playerToHandJoint = player.GetComponent<HingeJoint2D>();
-                playerToHandJoint.enabled = false;
-
-                //let mouse control hand again
-                handControl = true;
-
-                //makes player stand upright and constrains rotation
-                player.GetComponent<MovementScript>().fixPlayerRotation();
-
-                handCollider.isTrigger = true;
+                
             }
             else
             {

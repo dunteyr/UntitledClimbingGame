@@ -8,6 +8,8 @@ public class RespawnMenu : MonoBehaviour
     private SpawnBeacon spawnBeacon;
     private GameObject player;
     public GameObject respawnMenu;
+    private PlayerHealth playerHealth;
+
     private Component[] componentList;
     public bool respawnMenuActive = false;
 
@@ -15,6 +17,7 @@ public class RespawnMenu : MonoBehaviour
     {
         spawnBeacon = GameObject.FindGameObjectWithTag("SpawnPoint").GetComponent<SpawnBeacon>();
         player = GameObject.FindWithTag("Player");
+        playerHealth = player.GetComponent<PlayerHealth>();
         FindMenu();
 
         //set the UI to be gone by default
@@ -54,7 +57,7 @@ public class RespawnMenu : MonoBehaviour
     {
         if(respawnMenuActive == false)
         {
-            if (player.activeInHierarchy == false)
+            if (player.activeInHierarchy == false || playerHealth.playerIsDead)
             {
                 respawnMenu.SetActive(true);
                 respawnMenuActive = true;
