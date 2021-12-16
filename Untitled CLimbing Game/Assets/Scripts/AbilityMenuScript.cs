@@ -14,6 +14,9 @@ public class AbilityMenuScript : MonoBehaviour
     public GameObject infiniteJumpToggle;
     public bool infiniteJumpActive = false;
 
+    public GameObject invincibilityToggle;
+    public bool invincibilityActive = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -81,5 +84,21 @@ public class AbilityMenuScript : MonoBehaviour
             infiniteJumpActive = false;
         }
         
+    }
+
+    public void ToggleInvincibility()
+    {
+        if (invincibilityActive == false)
+        {
+            Debug.Log("Invincibility Enabled");
+            invincibilityActive = true;
+        }
+
+        else if (invincibilityActive)
+        {
+            Debug.Log("Invincibility Disabled");
+            invincibilityActive = false;
+        }
+
     }
 }

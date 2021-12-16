@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
     private RespawnMenu respawnMenu;
+    private AbilityMenuScript abilityMenu;
     private HeadsUpDisplay headsUpDisplay;
     private MovementScript movementScript;
 
@@ -15,6 +16,7 @@ public class PlayerHealth : MonoBehaviour
     void Start()
     {
         respawnMenu = GameObject.FindGameObjectWithTag("Menu").GetComponentInChildren<RespawnMenu>();
+        abilityMenu = GameObject.FindGameObjectWithTag("Menu").GetComponent<AbilityMenuScript>();
         headsUpDisplay = GameObject.FindGameObjectWithTag("HUD").GetComponent<HeadsUpDisplay>();
         movementScript = GetComponent<MovementScript>();
 
@@ -44,20 +46,25 @@ public class PlayerHealth : MonoBehaviour
     //can damage the player with a specific damage amount or by taking a percentage of max health
     public void DamagePlayer(float damageAmount, bool isPercentage = false)
     {
-        if (isPercentage)
+        //only damages if invincibility is off
+        if(abilityMenu.invincibilityActive == false)
         {
-            //damageAmount will be a percentage of health taken
-            float damagePercentage = damageAmount * 0.01f;
-            playerCurrentHealth -= playerMaxHealth * damagePercentage;
-            headsUpDisplay.SetHealthBar(playerCurrentHealth);
-        }
+            if (isPercentage)
+            {
+                //damageAmount will be a percentage of health taken
+                float damagePercentage = damageAmount * 0.01f;
+                playerCurrentHealth -= playerMaxHealth * damagePercentage;
+                headsUpDisplay.SetHealthBar(playerCurrentHealth);
+            }
 
-        else if(isPercentage == false)
-        {
-            //damageAmount is a literal value taken from health
-            playerCurrentHealth -= damageAmount;
-            headsUpDisplay.SetHealthBar(playerCurrentHealth);
-        }
+            else if (isPercentage == false)
+            {
+                //damageAmount is a literal value taken from health
+                playerCurrentHealth -= damageAmount;
+                headsUpDisplay.SetHealthBar(playerCurrentHealth);
+            }
+
+        } else { Debug.Log("No damage taken. Player is invincible."); }
     }
 
     public void KillPlayer()
