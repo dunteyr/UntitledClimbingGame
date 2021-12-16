@@ -23,7 +23,7 @@ public class MovementScript : MonoBehaviour
     [SerializeField] public float grabJumpForce = 550;
     [SerializeField] private float maxSpeed = 13;
     [SerializeField] private float fallDamageThreshold = 24;
-    [SerializeField] public float fallDeathThreshold = 40;
+    [SerializeField] public float fallDeathThreshold = 35;
 
 
     // Start is called before the first frame update

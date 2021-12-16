@@ -210,11 +210,14 @@ MonoBehaviour:
   ground_Check: {fileID: 4437752474646629563}
   jumpInput: 0
   isGrounded: 0
+  takeFallDamage: 0
   force: 18
   inAirForce: 6
   defaultJumpForce: 700
   grabJumpForce: 550
   maxSpeed: 13
+  fallDamageThreshold: 20
+  fallDeathThreshold: 35
 --- !u!114 &4437752475288588649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -431,9 +434,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilityMenu: {fileID: 0}
+  handCollider: {fileID: 0}
+  handRigidBody: {fileID: 0}
   player: {fileID: 4437752475288588641}
   distance: 1.5
   rotationPointOffset: 0.7
   grabbableColor: {r: 0, g: 1, b: 0, a: 1}
   grabColor: {r: 0, g: 0, b: 1, a: 1}
   isGrabbing: 0
+  handControl: 0
