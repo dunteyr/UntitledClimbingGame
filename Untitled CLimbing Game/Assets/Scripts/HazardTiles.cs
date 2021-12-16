@@ -44,7 +44,7 @@ public class HazardTiles : MonoBehaviour
     {
         if(hazardTile != null)
         {
-            if (hazardTile.name == "SpikeTile" || hazardTile.name == "SpikeTile_Down")
+            if (hazardTile.name == "Spikes" || hazardTile.name == "SpikesDown")
             {
                 playerHealth.DamagePlayer(100, true);
             }
