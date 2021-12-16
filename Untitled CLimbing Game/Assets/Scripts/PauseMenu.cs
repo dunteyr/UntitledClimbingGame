@@ -6,6 +6,7 @@ public class PauseMenu : MonoBehaviour
 {
     private Component[] componentList;
 
+    private SpawnBeacon spawnBeacon;
     public GameObject pauseMenu;
     public bool pauseMenuActive = false;
 
@@ -20,6 +21,7 @@ public class PauseMenu : MonoBehaviour
         pauseMenuActive = false;
 
         abilityMenu = GetComponent<AbilityMenuScript>();
+        spawnBeacon = GameObject.FindGameObjectWithTag("SpawnPoint").GetComponent<SpawnBeacon>();
     }
 
     // Update is called once per frame
@@ -81,5 +83,11 @@ public class PauseMenu : MonoBehaviour
             //activate the panel UI object (child of canvas)
             pauseMenu.SetActive(true);
         }
+    }
+
+    public void OnPauseRespawnButton()
+    {
+        spawnBeacon.RespawnPlayer();
+        TogglePauseMenu();
     }
 }
