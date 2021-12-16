@@ -44,11 +44,11 @@ public class HazardTiles : MonoBehaviour
     {
         if(hazardTile != null)
         {
-            if (hazardTile.name == "Spikes" || hazardTile.name == "SpikesDown")
+            if (hazardTile.name == "Spikes" || hazardTile.name == "SpikesDown" || hazardTile.name == "SpikesRight" || hazardTile.name == "SpikesLeft")
             {
                 playerHealth.DamagePlayer(100, true);
             }
-            else if (hazardTile.name == "SmallSpikes")
+            else if (hazardTile.name == "SmallSpikes" || hazardTile.name == "SmallSpikesDown" || hazardTile.name == "SmallSpikesRight" || hazardTile.name == "SmallSpikesLeft")
             {
                 playerHealth.DamagePlayer(25);
             }
