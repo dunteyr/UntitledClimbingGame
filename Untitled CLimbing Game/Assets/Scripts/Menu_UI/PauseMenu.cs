@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -89,5 +90,12 @@ public class PauseMenu : MonoBehaviour
     {
         spawnBeacon.RespawnPlayer();
         TogglePauseMenu();
+    }
+
+    public void OnPauseQuitButton()
+    {
+        //this needs to be called so that time isnt still frozen when going through menus and starting new levels
+        TogglePauseMenu();
+        SceneManager.LoadScene("MainMenu");
     }
 }

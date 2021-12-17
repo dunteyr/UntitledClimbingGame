@@ -16,6 +16,7 @@ public class MovementScript : MonoBehaviour
     public bool jumpInput;
     public bool isGrounded;
     public bool takeFallDamage = false;
+    public bool playerMovable = true;
 
     [SerializeField] private float force = 18;
     [SerializeField] private float inAirForce = 6;
@@ -47,11 +48,13 @@ public class MovementScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        MovePlayer();
+        //playerMovable becomes false in SetRagdoll so that player cant add forces to limp body
+        if (playerMovable)
+        {
+            MovePlayer();
 
-        ManageJump();
-
-        //DetectFallDamage();
+            ManageJump();
+        } 
     }
 
     private void ManageJump()
@@ -163,16 +166,20 @@ public class MovementScript : MonoBehaviour
             HingeJoint2D playerToHandJoint = GetComponent<HingeJoint2D>();
             playerToHandJoint.enabled = true;
 
+            //if ragdoll is on while player is dead, dont let the player add forces to the body
+            if (playerHealth.playerIsDead) { playerMovable = false; }
+
             if (handScript.handRigidBody == null)
             {
                 Debug.LogWarning("Ragdoll was turned on but handRigidBody is null and cant be turned to dynamic");
             }
 
-            else if(handScript.handRigidBody != null)
+            else if (handScript.handRigidBody != null)
             {
                 handScript.handRigidBody.bodyType = RigidbodyType2D.Dynamic;
                 handScript.handCollider.isTrigger = false;
                 handScript.handControl = false;
+                handScript.handRigidBody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
 
                 //if the hand is grabbing something while ragdolled its mass needs to stay at 1 
                 if (handScript.isGrabbing) { handScript.handRigidBody.mass = 1; }
@@ -190,6 +197,7 @@ public class MovementScript : MonoBehaviour
             //turn off the players hingejoint that is attached to the hand
             HingeJoint2D playerToHandJoint = GetComponent<HingeJoint2D>();
             playerToHandJoint.enabled = false;
+            if (playerHealth.playerIsDead == false) { playerMovable = true; }
 
             if (handScript.handRigidBody == null)
             {
@@ -203,6 +211,7 @@ public class MovementScript : MonoBehaviour
                 handScript.handRigidBody.mass = 1f;
                 handScript.handCollider.isTrigger = true;
                 handScript.handControl = true;
+                handScript.handRigidBody.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
             }
         }
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RespawnMenu : MonoBehaviour
@@ -36,6 +37,11 @@ public class RespawnMenu : MonoBehaviour
         respawnMenu.SetActive(false);
         respawnMenuActive = false;
         spawnBeacon.RespawnPlayer();
+    }
+
+    public void OnQuitButton()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
     private void FindMenu()

@@ -69,8 +69,8 @@ public class PlayerHealth : MonoBehaviour
 
     public void KillPlayer()
     {
-        movementScript.SetRagdoll(true);
         playerIsDead = true;
+        movementScript.SetRagdoll(true);
         respawnMenu.OnPlayerDeath();
     }
 
@@ -78,5 +78,7 @@ public class PlayerHealth : MonoBehaviour
     {
         playerCurrentHealth = newHealth;
         headsUpDisplay.SetHealthBar(newHealth);
+
+        if (playerCurrentHealth > 0 && playerIsDead) { playerIsDead = false; }
     }
 }
