@@ -124,6 +124,8 @@ MonoBehaviour:
   infiniteJumpActive: 0
   invincibilityToggle: {fileID: 0}
   invincibilityActive: 0
+  ragdollToggle: {fileID: 0}
+  ragdollActive: 0
 --- !u!114 &652619697212251777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,6 +368,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 652619697212251776}
+    - target: {fileID: 7162866588041433282, guid: 37d6831bb5e46ad48824c2ed60b7ca6a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 652619697212251776}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37d6831bb5e46ad48824c2ed60b7ca6a, type: 3}
 --- !u!224 &652619696775783811 stripped
@@ -386,6 +392,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 652619697212251779}
     m_Modifications:
     - target: {fileID: 8554586658752402867, guid: 38a4b7a85286f034a817a8c45833da8d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 652619697212251777}
+    - target: {fileID: 8554586658896737906, guid: 38a4b7a85286f034a817a8c45833da8d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 652619697212251777}

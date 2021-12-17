@@ -14,6 +14,7 @@ TagManager:
   - Menu
   - HUD
   - Vcam1
+  - FarCam
   layers:
   - Default
   - TransparentFX
