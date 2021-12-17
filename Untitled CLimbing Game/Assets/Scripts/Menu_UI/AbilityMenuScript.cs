@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class AbilityMenuScript : MonoBehaviour
 {
     private Component[] componentList;
+    private MovementScript movementScript;
 
     //script is for canvas but this object is the UI panel child
     public GameObject abilityMenu;
@@ -17,10 +18,16 @@ public class AbilityMenuScript : MonoBehaviour
     public GameObject invincibilityToggle;
     public bool invincibilityActive = false;
 
+    public GameObject ragdollToggle;
+    public bool ragdollActive = false;
+
+
     // Start is called before the first frame update
     void Start()
     {
         FindMenu();
+        movementScript = GameObject.FindGameObjectWithTag("Player").GetComponent<MovementScript>();
+
         //set the UI to be gone by default
         abilityMenu.SetActive(false);
         abilityMenuActive = false;
@@ -100,5 +107,22 @@ public class AbilityMenuScript : MonoBehaviour
             invincibilityActive = false;
         }
 
+    }
+
+    public void ToggleRagdoll()
+    {
+        if (ragdollActive == false)
+        {
+            Debug.Log("Ragdoll Enabled");
+            movementScript.SetRagdoll(true);
+            ragdollActive = true;
+        }
+
+        else if (ragdollActive)
+        {
+            Debug.Log("Ragdoll Disabled");
+            movementScript.SetRagdoll(false);
+            ragdollActive = false;
+        }
     }
 }

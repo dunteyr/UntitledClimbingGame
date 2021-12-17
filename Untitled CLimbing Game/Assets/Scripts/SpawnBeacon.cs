@@ -6,6 +6,7 @@ public class SpawnBeacon : MonoBehaviour
 {
     private GameObject player;
     private PlayerHealth playerHealth;
+    private AbilityMenuScript abilityMenu;
     private Quaternion playerRotation;
 
     void Start()
@@ -13,6 +14,7 @@ public class SpawnBeacon : MonoBehaviour
         //find players health script to reference player object
         player = FindObjectOfType<PlayerHealth>().gameObject;
         playerHealth = player.GetComponent<PlayerHealth>();
+        abilityMenu = GameObject.FindGameObjectWithTag("Menu").GetComponent<AbilityMenuScript>();
         playerRotation = player.transform.rotation;
     }
 
@@ -31,7 +33,7 @@ public class SpawnBeacon : MonoBehaviour
 
             //move player to spawn point, give him his health back and then activate him
             player.transform.SetPositionAndRotation(transform.position, player.transform.rotation);
-            player.GetComponent<MovementScript>().SetRagdoll(false);
+            if (abilityMenu.ragdollActive == false) { player.GetComponent<MovementScript>().SetRagdoll(false); } //player stays ragolled if ragdoll ability is on
             playerHealth.SetPlayerHealth(playerHealth.playerMaxHealth);
             playerHealth.playerIsDead = false;
 
@@ -42,7 +44,7 @@ public class SpawnBeacon : MonoBehaviour
             //move player to spawn point, give him his health back and then activate him
             player.transform.SetPositionAndRotation(transform.position, playerRotation);
             playerHealth.SetPlayerHealth(playerHealth.playerMaxHealth);
-            player.GetComponent<MovementScript>().SetRagdoll(false);
+            if (abilityMenu.ragdollActive == false) { player.GetComponent<MovementScript>().SetRagdoll(false); } //player stays ragolled if ragdoll ability is on
             playerHealth.playerIsDead = false;
         }
     }
