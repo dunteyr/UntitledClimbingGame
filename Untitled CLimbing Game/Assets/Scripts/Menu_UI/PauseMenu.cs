@@ -8,6 +8,7 @@ public class PauseMenu : MonoBehaviour
     private Component[] componentList;
 
     private SpawnBeacon spawnBeacon;
+    private CheckpointManager checkpointManager;
     public GameObject pauseMenu;
     public bool pauseMenuActive = false;
 
@@ -23,6 +24,7 @@ public class PauseMenu : MonoBehaviour
 
         abilityMenu = GetComponent<AbilityMenuScript>();
         spawnBeacon = GameObject.FindGameObjectWithTag("SpawnPoint").GetComponent<SpawnBeacon>();
+        checkpointManager = GameObject.FindGameObjectWithTag("CheckpointManager").GetComponent<CheckpointManager>();
     }
 
     // Update is called once per frame
@@ -73,6 +75,9 @@ public class PauseMenu : MonoBehaviour
             pauseMenuActive = false;
             //deactivate the panel UI object (child of canvas)
             pauseMenu.SetActive(false);
+
+            //toggling the pause menu while the ability menu is open turns ability menu off too
+            if(abilityMenu.abilityMenuActive) { abilityMenu.ToggleAbilityMenu(); }
         }
 
         else if (pauseMenuActive == false)
@@ -88,8 +93,15 @@ public class PauseMenu : MonoBehaviour
 
     public void OnPauseRespawnButton()
     {
-        spawnBeacon.RespawnPlayer();
+        checkpointManager.RespawnPlayer();
         TogglePauseMenu();
+    }
+
+    public void OnPauseRestartButton()
+    {
+        TogglePauseMenu();
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
     }
 
     public void OnPauseQuitButton()

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class RespawnMenu : MonoBehaviour
 {
     private SpawnBeacon spawnBeacon;
+    private CheckpointManager checkpointManager;
     private GameObject player;
     public GameObject respawnMenu;
     private PlayerHealth playerHealth;
@@ -17,6 +18,8 @@ public class RespawnMenu : MonoBehaviour
     void Start()
     {
         spawnBeacon = GameObject.FindGameObjectWithTag("SpawnPoint").GetComponent<SpawnBeacon>();
+        checkpointManager = GameObject.FindGameObjectWithTag("CheckpointManager").GetComponent<CheckpointManager>();
+
         player = GameObject.FindWithTag("Player");
         playerHealth = player.GetComponent<PlayerHealth>();
         FindMenu();
@@ -36,7 +39,7 @@ public class RespawnMenu : MonoBehaviour
     {
         respawnMenu.SetActive(false);
         respawnMenuActive = false;
-        spawnBeacon.RespawnPlayer();
+        checkpointManager.RespawnPlayer();
     }
 
     public void OnQuitButton()

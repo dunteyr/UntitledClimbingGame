@@ -137,7 +137,6 @@ public class MovementScript : MonoBehaviour
         //when the collision speed is over the fall damage min
         if (collision.relativeVelocity.magnitude >= fallDamageThreshold)
         {
-            Debug.Log("Fall damage");
             float collisionSpeed = collision.relativeVelocity.magnitude;
 
             //difference between the min speed to get hurt and the death speed (both changeable)
@@ -152,7 +151,6 @@ public class MovementScript : MonoBehaviour
 
             //apply that percent overage to the players health in the form of damage
             playerHealth.DamagePlayer(damagePercentage, true);
-            Debug.Log("Damage Percentage: " + damagePercentage);
         }
     }
 
