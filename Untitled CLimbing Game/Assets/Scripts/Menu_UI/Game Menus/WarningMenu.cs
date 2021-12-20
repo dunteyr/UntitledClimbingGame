@@ -15,11 +15,11 @@ public class WarningMenu : MonoBehaviour
     void Start()
     {
         FindMenu();
+        warningText = GameObject.FindGameObjectWithTag("WarningText").GetComponent<TextMeshPro>();
 
         warningMenu.SetActive(false);
         warningMenuActive = false;
 
-        warningText = GameObject.FindGameObjectWithTag("WarningText").GetComponent<TextMeshPro>();
     }
 
     private void FindMenu()

@@ -23,8 +23,8 @@ public class RespawnMenu : MonoBehaviour
         spawnBeacon = GameObject.FindGameObjectWithTag("SpawnPoint").GetComponent<SpawnBeacon>();
         checkpointManager = GameObject.FindGameObjectWithTag("CheckpointManager").GetComponent<CheckpointManager>();
 
-        warningMenu = GameObject.FindGameObjectWithTag("PopupMenu").GetComponent<WarningMenu>();
-        warningMessages = warningMenu.GetComponent<WarningMessages>();
+        //warningMenu = GameObject.FindGameObjectWithTag("PopupMenu").GetComponent<WarningMenu>();
+        //warningMessages = warningMenu.GetComponent<WarningMessages>();
 
         player = GameObject.FindWithTag("Player");
         playerHealth = player.GetComponent<PlayerHealth>();
