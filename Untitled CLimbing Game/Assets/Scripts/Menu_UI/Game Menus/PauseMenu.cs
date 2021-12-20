@@ -45,7 +45,6 @@ public class PauseMenu : MonoBehaviour
             else if(abilityMenu.abilityMenuActive == true && pauseMenuActive == true)
             {
                 TogglePauseMenu();
-                abilityMenu.ToggleAbilityMenu();
             }
             
         }
