@@ -17,6 +17,11 @@ TagManager:
   - FarCam
   - Checkpoint
   - CheckpointManager
+  - Flag
+  - PopupMenu
+  - LevelComplete
+  - Warning
+  - WarningText
   layers:
   - Default
   - TransparentFX
