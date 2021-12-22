@@ -123,17 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &153974848 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 652619697212251777, guid: 6766d8f021fb5d44a878088b33b53048, type: 3}
-  m_PrefabInstance: {fileID: 652619696872762351}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37d936b24b7410647a05fcd915e1789a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &189153259
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,36 +190,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &358384062 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5333746726416094438, guid: 89394188f81fe79438de66071f7afa43, type: 3}
-  m_PrefabInstance: {fileID: 1541306444}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &358384068
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 358384062}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bafadde8b85b690438575cc8f91bf378, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &358384069
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 358384062}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4aff838e652139c4fb9496445c470485, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  warningMenuActive: 0
 --- !u!1001 &491473063
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -82675,14 +82634,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3282436553644507226, guid: 89394188f81fe79438de66071f7afa43, type: 3}
-      propertyPath: m_TagString
-      value: WarningText
-      objectReference: {fileID: 0}
-    - target: {fileID: 4633834775204311482, guid: 89394188f81fe79438de66071f7afa43, type: 3}
-      propertyPath: m_Name
-      value: Warning Menu
-      objectReference: {fileID: 0}
     - target: {fileID: 5333746726416094438, guid: 89394188f81fe79438de66071f7afa43, type: 3}
       propertyPath: m_Name
       value: Popup Menus
@@ -83083,14 +83034,6 @@ PrefabInstance:
     - target: {fileID: 652619697212251783, guid: 6766d8f021fb5d44a878088b33b53048, type: 3}
       propertyPath: m_Name
       value: Menu
-      objectReference: {fileID: 0}
-    - target: {fileID: 3368787165849347731, guid: 6766d8f021fb5d44a878088b33b53048, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 153974848}
-    - target: {fileID: 3368787165849347731, guid: 6766d8f021fb5d44a878088b33b53048, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnPauseRestartButton
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6766d8f021fb5d44a878088b33b53048, type: 3}

@@ -15,7 +15,7 @@ public class WarningMenu : MonoBehaviour
     void Start()
     {
         FindMenu();
-        warningText = GameObject.FindGameObjectWithTag("WarningText").GetComponent<TextMeshPro>();
+        //warningText = GameObject.FindGameObjectWithTag("WarningText").GetComponent<TextMeshPro>();
 
         warningMenu.SetActive(false);
         warningMenuActive = false;
@@ -31,7 +31,6 @@ public class WarningMenu : MonoBehaviour
         for (int i = 0; i < componentList.Length; i++)
         {
             if (componentList[i].gameObject.tag == "Warning")
-
             {
                 warningMenu = componentList[i].gameObject;
             }

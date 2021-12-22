@@ -12,6 +12,15 @@ public class MovementScript : MonoBehaviour
     private CapsuleCollider2D playerCollider;
     public CircleCollider2D ground_Check;
 
+    private CompositeCollider2D terrainCollider;
+
+    private float colliderHeight;
+    private Vector2 topOfPlayer;
+    private Vector2 bottomOfPlayer;
+    private bool isOverlapping = false;
+    private Vector3 playerRotation;
+    public float torque = 0.5f;
+
     private float horizontalInput;
     public bool jumpInput;
     public bool isGrounded;
@@ -84,7 +93,7 @@ public class MovementScript : MonoBehaviour
     public void Jump(float jumpForce)
     {
         //force is relative to player's "up" not the worlds "up"
-        player.AddForce(transform.up * jumpForce);
+        player.AddForce(Vector3.up * jumpForce);
     }
 
     private void MovePlayer()
@@ -118,13 +127,38 @@ public class MovementScript : MonoBehaviour
     }
 
     //called in HandSriptForReal when letting go from terrain
-    public void fixPlayerRotation()
+    IEnumerator FixPlayerRotation()
     {
-        Vector3 playerRotation = transform.eulerAngles;
+        Debug.Log("Coroutine began");
+        playerRotation = transform.eulerAngles;
 
+        //while the player is rotated between 60 and 120 degrees
+        while (playerRotation.z > 60 && playerRotation.z < 120)
+        {
+            //gets rotation and adds torque based on which side player is rotated to
+            playerRotation = transform.eulerAngles;
+            player.AddTorque(torque * -1, ForceMode2D.Impulse);
+            Debug.Log("Left side rotation...");
+            yield return null;
+        }
+
+        //same as other loop but for the other side
+        while(playerRotation.z < 300 && playerRotation.z > 240)
+        {
+            playerRotation = transform.eulerAngles;
+            player.AddTorque(torque, ForceMode2D.Impulse);
+            Debug.Log("Right side rotation...");
+            yield return null;
+        }
+
+        //after the player rotation is out of those zones, set the rotation to upright instantly and stop the coroutine
+        playerRotation = transform.eulerAngles;
         //desired angle is 0 degrees so rotate z axis by -playerRotation
         transform.Rotate(0.0f, 0.0f, playerRotation.z * -1, Space.World);
-
+        
+        player.constraints = RigidbodyConstraints2D.FreezeRotation;
+        Debug.Log("Coroutine finished.");
+        yield break;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -189,8 +223,7 @@ public class MovementScript : MonoBehaviour
 
         else if(ragdollOn == false)
         {
-            fixPlayerRotation();
-            player.constraints = RigidbodyConstraints2D.FreezeRotation;
+            StartCoroutine(FixPlayerRotation());
 
             //turn off the players hingejoint that is attached to the hand
             HingeJoint2D playerToHandJoint = GetComponent<HingeJoint2D>();
@@ -212,5 +245,41 @@ public class MovementScript : MonoBehaviour
                 handScript.handRigidBody.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
             }
         }
+    }
+
+    private void CheckOverlap()
+    {
+        Debug.Log("Overlap check triggered");
+        terrainCollider = GameObject.FindGameObjectWithTag("Ground").GetComponent<CompositeCollider2D>();
+
+        colliderHeight = playerCollider.size.y;
+        topOfPlayer = transform.position + new Vector3(0, colliderHeight/2, 0);
+        bottomOfPlayer = transform.position - new Vector3(0, colliderHeight / 2, 0);
+
+        if (terrainCollider.OverlapPoint(bottomOfPlayer + new Vector2 (0, 0.05f)))
+        {
+            isOverlapping = true;
+        }
+
+        //fixes the overlap if there is one
+        if (isOverlapping)
+        {
+            FixOverlap();
+            isOverlapping = false;
+        }  
+    }
+
+    private void FixOverlap()
+    {
+        //get a point on the composite collider perimeter closest to top of player
+        Vector2 topClo = terrainCollider.ClosestPoint(topOfPlayer);
+
+        //subtract the distance of the top of player to the comp collider from the player height to find how much of player is overlapped
+        float nonOverlap = topOfPlayer.y - topClo.y;
+        float overlap = colliderHeight - nonOverlap;
+
+        //add the overlap (plus a small amount just in case) to the player vertical position to get him out of the terrain
+        Vector3 positionChange = new Vector3(0, overlap + 0.05f, 0);
+        transform.SetPositionAndRotation(transform.position + positionChange, transform.rotation);
     }
 }

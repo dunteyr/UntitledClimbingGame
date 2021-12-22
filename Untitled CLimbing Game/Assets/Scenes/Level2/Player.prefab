@@ -208,9 +208,11 @@ MonoBehaviour:
   abilityMenu: {fileID: 0}
   player: {fileID: 4437752475288588653}
   ground_Check: {fileID: 4437752474646629563}
+  torque: 0.5
   jumpInput: 0
   isGrounded: 0
   takeFallDamage: 0
+  playerMovable: 1
   force: 18
   inAirForce: 6
   defaultJumpForce: 700

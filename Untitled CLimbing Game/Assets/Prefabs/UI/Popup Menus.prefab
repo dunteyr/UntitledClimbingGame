@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 5333746726416094437}
   - component: {fileID: 5333746726416094436}
   - component: {fileID: 5333746726416094439}
-  - component: {fileID: 2705609357906758806}
   - component: {fileID: 5904790285946775524}
+  - component: {fileID: 3398913109330270396}
   m_Layer: 5
   m_Name: Popup Menus
   m_TagString: PopupMenu
@@ -118,19 +118,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelCompleteMenuActive: 0
---- !u!114 &2705609357906758806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5333746726416094438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4aff838e652139c4fb9496445c470485, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  warningMenuActive: 0
 --- !u!114 &5904790285946775524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,6 +130,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafadde8b85b690438575cc8f91bf378, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3398913109330270396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5333746726416094438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aff838e652139c4fb9496445c470485, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  warningMenuActive: 0
 --- !u!1001 &3149806125561017953
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -160,7 +160,7 @@ PrefabInstance:
       objectReference: {fileID: 5333746726416094439}
     - target: {fileID: 7780227664170600411, guid: 8ad0365867af92e41b97622e6cd58a68, type: 3}
       propertyPath: m_Name
-      value: Quit Warning
+      value: Warning Menu
       objectReference: {fileID: 0}
     - target: {fileID: 8808730980334170609, guid: 8ad0365867af92e41b97622e6cd58a68, type: 3}
       propertyPath: m_Pivot.x

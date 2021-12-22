@@ -71178,10 +71178,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4437752474646629541, guid: 016e80cf6e64c384892b81e77e5a63f5, type: 3}
-      propertyPath: abilityMenu
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 4437752475288588641, guid: 016e80cf6e64c384892b81e77e5a63f5, type: 3}
       propertyPath: m_Name
       value: Player
@@ -71229,22 +71225,6 @@ PrefabInstance:
     - target: {fileID: 4437752475288588652, guid: 016e80cf6e64c384892b81e77e5a63f5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4437752475288588654, guid: 016e80cf6e64c384892b81e77e5a63f5, type: 3}
-      propertyPath: abilityMenu
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4437752475288588655, guid: 016e80cf6e64c384892b81e77e5a63f5, type: 3}
-      propertyPath: mainCamera
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4437752475288588655, guid: 016e80cf6e64c384892b81e77e5a63f5, type: 3}
-      propertyPath: abilityMenu
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4437752476532988692, guid: 016e80cf6e64c384892b81e77e5a63f5, type: 3}
-      propertyPath: abilityMenu
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 016e80cf6e64c384892b81e77e5a63f5, type: 3}
