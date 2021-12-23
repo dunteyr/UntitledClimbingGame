@@ -8,6 +8,7 @@ public class PlayerHealth : MonoBehaviour
     private AbilityMenuScript abilityMenu;
     private HeadsUpDisplay headsUpDisplay;
     private MovementScript movementScript;
+    private HandScriptForReal handScript;
 
     public float playerMaxHealth;
     public float playerCurrentHealth;
@@ -19,6 +20,7 @@ public class PlayerHealth : MonoBehaviour
         abilityMenu = GameObject.FindGameObjectWithTag("Menu").GetComponent<AbilityMenuScript>();
         headsUpDisplay = GameObject.FindGameObjectWithTag("HUD").GetComponent<HeadsUpDisplay>();
         movementScript = GetComponent<MovementScript>();
+        handScript = GetComponentInChildren<HandScriptForReal>();
 
         playerIsDead = false;
         playerMaxHealth = 100;
@@ -70,7 +72,10 @@ public class PlayerHealth : MonoBehaviour
     public void KillPlayer()
     {
         playerIsDead = true;
-        movementScript.SetRagdoll(true);
+        //checks if the player is grabbing something and lets go using hand script
+        LetGoOnDeath();
+        //this is redundant if player is grabbing when he dies. but needed on a regular death
+        movementScript.SetRagdoll(true);       
         respawnMenu.OnPlayerDeath();
     }
 
@@ -80,5 +85,24 @@ public class PlayerHealth : MonoBehaviour
         headsUpDisplay.SetHealthBar(newHealth);
 
         if (playerCurrentHealth > 0 && playerIsDead) { playerIsDead = false; }
+    }
+
+    private void LetGoOnDeath()
+    {
+        if (handScript.isGrabbing)
+        {
+            if (handScript.terrainHingeJoint != null)
+            {
+                handScript.LetGo(handScript.terrainHingeJoint, true);
+            }
+            else if (handScript.handHingeJoint != null)
+            {
+                handScript.LetGo(handScript.handHingeJoint, true);
+            }
+            else if (handScript.ropeHingeJoint != null)
+            {
+                handScript.LetGo(handScript.ropeHingeJoint, true);
+            }
+        }      
     }
 }

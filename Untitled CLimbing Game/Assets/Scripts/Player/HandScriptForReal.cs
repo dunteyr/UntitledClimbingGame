@@ -21,9 +21,9 @@ public class HandScriptForReal : MonoBehaviour
     [SerializeField] private Color grabColor = Color.blue;
     public bool isGrabbing;
 
-    private HingeJoint2D handHingeJoint;
-    private HingeJoint2D terrainHingeJoint;
-    private HingeJoint2D ropeHingeJoint;
+    public HingeJoint2D handHingeJoint;
+    public HingeJoint2D terrainHingeJoint;
+    public HingeJoint2D ropeHingeJoint;
 
     private bool leftMouseClicked;
     private bool rightMouseClicked;
@@ -273,7 +273,7 @@ public class HandScriptForReal : MonoBehaviour
         }
     }
 
-    private void LetGo(HingeJoint2D jointToLetGo)
+    public void LetGo(HingeJoint2D jointToLetGo, bool ragdollSet = false)
     {
         spriteRend.color = defaultColor;
         isGrabbing = false;
@@ -290,7 +290,7 @@ public class HandScriptForReal : MonoBehaviour
             {
                 Destroy(terrainHingeJoint);
 
-                movementScript.SetRagdoll(false);
+                movementScript.SetRagdoll(ragdollSet);
 
             }
 
@@ -298,7 +298,7 @@ public class HandScriptForReal : MonoBehaviour
             {
                 Destroy(ropeHingeJoint);
 
-                movementScript.SetRagdoll(false);
+                movementScript.SetRagdoll(ragdollSet);
 
                 
             }
