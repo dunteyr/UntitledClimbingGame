@@ -1,25 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class WarningMenu : MonoBehaviour
 {
     private Component[] componentList;
     private GameObject warningMenu;
-    private TextMeshPro warningText;
+    public TextMeshProUGUI warningText;
+    private WarningMessages warningMessages;
+    public string messageType;
 
     public bool warningMenuActive;
+    public bool clickedYes;
 
     // Start is called before the first frame update
     void Start()
-    {
+    {       
         FindMenu();
-        //warningText = GameObject.FindGameObjectWithTag("WarningText").GetComponent<TextMeshPro>();
+        warningText = GameObject.FindGameObjectWithTag("WarningText").GetComponent<TextMeshProUGUI>();
+
+        warningMessages = GetComponent<WarningMessages>();
 
         warningMenu.SetActive(false);
         warningMenuActive = false;
-
     }
 
     private void FindMenu()
@@ -53,9 +58,55 @@ public class WarningMenu : MonoBehaviour
         }
     }
 
-    //calls togglewarning and sets a warning message
-    public void ShowWarning(string warningMessage)
+    //calls togglewarning and sets specified warning message
+    public void ShowWarning(string whichMessage)
     {
-        warningText.text = warningMessage;
+        messageType = whichMessage;
+        
+        if (whichMessage == "Quit")
+        {
+            warningText.text = warningMessages.QuitLevelWarning();
+        }
+
+        else if(whichMessage == "Restart")
+        {
+            warningText.text = warningMessages.RestartLevelWarning();
+        }
+
+        else if(whichMessage == "EraseSave")
+        {
+            warningText.text = warningMessages.EraseSaveWarning();
+        }
+
+        else
+        {
+            Debug.LogWarning("ShowWarning() was called with an invalid warning type");
+        }
+
+        ToggleWarning();
+    }
+
+    public void YesButton()
+    {
+        if(messageType == "Quit")
+        {
+            SceneManager.LoadScene("MainMenu");
+            if(Time.timeScale != 1f) { Time.timeScale = 1f; } //set time to normal if it isnt already
+        }
+        else if (messageType == "Restart")
+        {
+            Scene currentScene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(currentScene.name);
+            if (Time.timeScale != 1f) { Time.timeScale = 1f; } //set time to normal if it isnt already
+        }
+        else if (messageType == "EraseSave")
+        {
+            Debug.LogWarning("There is no erase save function yet.");
+        }
+    }
+
+    public void NoButton()
+    {
+        ToggleWarning();
     }
 }

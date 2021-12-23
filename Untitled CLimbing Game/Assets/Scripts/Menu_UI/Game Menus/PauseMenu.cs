@@ -13,6 +13,7 @@ public class PauseMenu : MonoBehaviour
     public bool pauseMenuActive = false;
 
     private AbilityMenuScript abilityMenu;
+    private WarningMenu warningMenu;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,7 @@ public class PauseMenu : MonoBehaviour
         pauseMenuActive = false;
 
         abilityMenu = GetComponent<AbilityMenuScript>();
+        warningMenu = GameObject.FindGameObjectWithTag("PopupMenu").GetComponent<WarningMenu>();
         spawnBeacon = GameObject.FindGameObjectWithTag("SpawnPoint").GetComponent<SpawnBeacon>();
         checkpointManager = GameObject.FindGameObjectWithTag("CheckpointManager").GetComponent<CheckpointManager>();
     }
@@ -98,15 +100,16 @@ public class PauseMenu : MonoBehaviour
 
     public void OnPauseRestartButton()
     {
-        TogglePauseMenu();
-        Scene currentScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(currentScene.name);
+        //TogglePauseMenu();
+        //warning menu handles restart
+        warningMenu.ShowWarning("Restart");
     }
 
     public void OnPauseQuitButton()
     {
+        //warning menu handles quit
+        warningMenu.ShowWarning("Quit");
         //this needs to be called so that time isnt still frozen when going through menus and starting new levels
-        TogglePauseMenu();
-        SceneManager.LoadScene("MainMenu");
+        //TogglePauseMenu();
     }
 }

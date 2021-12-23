@@ -13,7 +13,6 @@ public class RespawnMenu : MonoBehaviour
     private PlayerHealth playerHealth;
 
     private WarningMenu warningMenu;
-    private WarningMessages warningMessages;
 
     private Component[] componentList;
     public bool respawnMenuActive = false;
@@ -23,8 +22,7 @@ public class RespawnMenu : MonoBehaviour
         spawnBeacon = GameObject.FindGameObjectWithTag("SpawnPoint").GetComponent<SpawnBeacon>();
         checkpointManager = GameObject.FindGameObjectWithTag("CheckpointManager").GetComponent<CheckpointManager>();
 
-        //warningMenu = GameObject.FindGameObjectWithTag("PopupMenu").GetComponent<WarningMenu>();
-        //warningMessages = warningMenu.GetComponent<WarningMessages>();
+        warningMenu = GameObject.FindGameObjectWithTag("PopupMenu").GetComponent<WarningMenu>();
 
         player = GameObject.FindWithTag("Player");
         playerHealth = player.GetComponent<PlayerHealth>();
@@ -50,7 +48,8 @@ public class RespawnMenu : MonoBehaviour
 
     public void OnQuitButton()
     {
-        SceneManager.LoadScene("MainMenu");
+        //warning menu handles the quit
+        warningMenu.ShowWarning("Quit");
     }
 
     private void FindMenu()

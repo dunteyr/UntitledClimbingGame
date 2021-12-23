@@ -107,6 +107,10 @@ PrefabInstance:
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8964764135508425752, guid: e622aed6567a7a64f86611eaf87534d1, type: 3}
+      propertyPath: m_Lens.m_SensorSize.x
+      value: 2.191217
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e622aed6567a7a64f86611eaf87534d1, type: 3}
 --- !u!4 &6372685446591884817 stripped
@@ -168,6 +172,10 @@ PrefabInstance:
     - target: {fileID: 7494349864746461290, guid: 145dca693d06be2439af294a9e4fc962, type: 3}
       propertyPath: m_Follow
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7494349864746461290, guid: 145dca693d06be2439af294a9e4fc962, type: 3}
+      propertyPath: m_Lens.m_SensorSize.x
+      value: 2.191217
       objectReference: {fileID: 0}
     - target: {fileID: 7494349864746461291, guid: 145dca693d06be2439af294a9e4fc962, type: 3}
       propertyPath: m_Name
