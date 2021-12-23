@@ -129,7 +129,6 @@ public class MovementScript : MonoBehaviour
     //called in HandSriptForReal when letting go from terrain
     IEnumerator FixPlayerRotation()
     {
-        Debug.Log("Coroutine began");
         playerRotation = transform.eulerAngles;
 
         //while the player is rotated between 60 and 120 degrees
@@ -138,7 +137,7 @@ public class MovementScript : MonoBehaviour
             //gets rotation and adds torque based on which side player is rotated to
             playerRotation = transform.eulerAngles;
             player.AddTorque(torque * -1, ForceMode2D.Impulse);
-            Debug.Log("Left side rotation...");
+
             yield return null;
         }
 
@@ -147,7 +146,7 @@ public class MovementScript : MonoBehaviour
         {
             playerRotation = transform.eulerAngles;
             player.AddTorque(torque, ForceMode2D.Impulse);
-            Debug.Log("Right side rotation...");
+
             yield return null;
         }
 
@@ -157,7 +156,7 @@ public class MovementScript : MonoBehaviour
         transform.Rotate(0.0f, 0.0f, playerRotation.z * -1, Space.World);
         
         player.constraints = RigidbodyConstraints2D.FreezeRotation;
-        Debug.Log("Coroutine finished.");
+
         yield break;
     }
 
