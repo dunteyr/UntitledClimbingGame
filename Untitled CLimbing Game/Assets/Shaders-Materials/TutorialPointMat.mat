@@ -37,11 +37,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _CellSize: 10
+    - _CellSize: 7.7
+    - _CellSpeed: 9
     - _HoverAmount: 0.2
     - _HoverSpeed: 2
     m_Colors:
     - _Color: {r: 0.9441028, g: 0.9811321, b: 0.2073335, a: 0}
-    - _PrimaryColor: {r: 0.9543147, g: 1, b: 0, a: 0}
-    - _SecondaryColor: {r: 0, g: 1, b: 1, a: 0}
+    - _PrimaryColor: {r: 0.9441028, g: 0.9811321, b: 0.2073335, a: 0}
+    - _SecondaryColor: {r: 0.2396226, g: 1, b: 0.8511786, a: 0}
   m_BuildTextureStacks: []
