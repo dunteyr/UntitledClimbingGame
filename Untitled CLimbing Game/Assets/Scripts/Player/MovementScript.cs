@@ -187,7 +187,7 @@ public class MovementScript : MonoBehaviour
         }
     }
 
-    public void SetRagdoll(bool ragdollOn)
+    public void SetRagdoll(bool ragdollOn, bool ragdollLetGo = false)
     {
         if (ragdollOn)
         {
@@ -211,6 +211,26 @@ public class MovementScript : MonoBehaviour
                 handScript.handCollider.isTrigger = false;
                 handScript.handControl = false;
                 handScript.handRigidBody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+
+                //this is for when you want to let go of something on ragdoll
+                if (ragdollLetGo)
+                {
+                    if (handScript.isGrabbing)
+                    {
+                        if (handScript.terrainHingeJoint != null)
+                        {
+                            handScript.LetGo(handScript.terrainHingeJoint, true);
+                        }
+                        else if (handScript.handHingeJoint != null)
+                        {
+                            handScript.LetGo(handScript.handHingeJoint, true);
+                        }
+                        else if (handScript.ropeHingeJoint != null)
+                        {
+                            handScript.LetGo(handScript.ropeHingeJoint, true);
+                        }
+                    }
+                }
 
                 //if the hand is grabbing something while ragdolled its mass needs to stay at 1 
                 if (handScript.isGrabbing) { handScript.handRigidBody.mass = 1; }

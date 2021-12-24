@@ -290,6 +290,7 @@ public class HandScriptForReal : MonoBehaviour
             {
                 Destroy(terrainHingeJoint);
 
+                //ragdollSet param allows letting go and staying ragdolled
                 movementScript.SetRagdoll(ragdollSet);
 
             }
@@ -298,6 +299,7 @@ public class HandScriptForReal : MonoBehaviour
             {
                 Destroy(ropeHingeJoint);
 
+                //ragdollSet param allows letting go and staying ragdolled
                 movementScript.SetRagdoll(ragdollSet);
 
                 

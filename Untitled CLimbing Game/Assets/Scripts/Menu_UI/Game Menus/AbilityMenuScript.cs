@@ -42,6 +42,7 @@ public class AbilityMenuScript : MonoBehaviour
             ToggleAbilityMenu();
         }
 
+        ManageAbilityInputs();
 
     }
     private void FindMenu()
@@ -56,6 +57,29 @@ public class AbilityMenuScript : MonoBehaviour
             {
                 abilityMenu = componentList[i].gameObject;
             }
+        }
+    }
+
+    private void ManageAbilityInputs()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            ToggleInfiniteJump();
+        }
+
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            ToggleInvincibility();
+        }
+
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            ToggleRagdoll();
+        }
+
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+
         }
     }
 
@@ -114,7 +138,7 @@ public class AbilityMenuScript : MonoBehaviour
         if (ragdollActive == false)
         {
             Debug.Log("Ragdoll Enabled");
-            movementScript.SetRagdoll(true);
+            movementScript.SetRagdoll(true, true);
             ragdollActive = true;
         }
 
