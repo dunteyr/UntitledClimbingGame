@@ -43,6 +43,6 @@ Material:
     - _HoverSpeed: 2
     m_Colors:
     - _Color: {r: 0.9441028, g: 0.9811321, b: 0.2073335, a: 0}
-    - _PrimaryColor: {r: 0.8133411, g: 0.8490566, b: 0.06728367, a: 0}
-    - _SecondaryColor: {r: 0.071021646, g: 0.8962264, b: 0.7345883, a: 0}
+    - _PrimaryColor: {r: 3.2470589, g: 3.4039216, b: 0.26666668, a: 0}
+    - _SecondaryColor: {r: 0.28235295, g: 3.592157, b: 2.9333334, a: 0}
   m_BuildTextureStacks: []

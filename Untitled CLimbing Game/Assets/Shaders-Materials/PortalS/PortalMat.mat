@@ -49,6 +49,6 @@ Material:
     - _TwirlOffset: 22.8
     - _TwirlSpeed: 0.46
     m_Colors:
-    - _Color: {r: 1, g: 0.2867924, b: 0.8046276, a: 1}
+    - _Color: {r: 6.8831816, g: 0, b: 5.0092263, a: 1}
     - _Main_Color: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
