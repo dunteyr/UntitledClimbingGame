@@ -118,6 +118,13 @@ public class MovementScript : MonoBehaviour
                 } 
             }
         }
+        /*
+        //without specific case for over max speed, high framerates will cause jitteriness in player movement
+        else if(player.velocity.magnitude >= maxSpeed)
+        {
+
+        }
+        */
 
         //whether faster than max speed or not if hes in the air he has slight right-left control
         if (isGrounded == false)

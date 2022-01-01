@@ -23,6 +23,7 @@ TagManager:
   - Warning
   - WarningText
   - TutorialCanvas
+  - GameSettings
   layers:
   - Default
   - TransparentFX
