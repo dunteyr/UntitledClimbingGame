@@ -101,6 +101,15 @@ public class TutorialMessages : MonoBehaviour
             return tutorialText;
         }
 
+        else if (tutorial == "ImpactDamage")
+        {
+            tutorialText = "Fall damage hurts but so does swinging into a cliff face first." +
+                "\u000a\u000aIt will hurt less than a straight drop probably..." +
+                "\u000abut it could kill you if you swing into something too hard";
+
+            return tutorialText;
+        }
+
         else
         {
             Debug.LogError("Tutorial not found.");
