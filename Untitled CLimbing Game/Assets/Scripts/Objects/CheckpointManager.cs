@@ -7,6 +7,7 @@ public class CheckpointManager : MonoBehaviour
     public CheckpointPortal[] checkpoints;
     public CheckpointPortal currentActiveCheckpoint;
     public SpawnBeacon defaultSpawn;
+    public CameraPlayerBehavior mainCam;
     private Canvas checkpointMessages;
 
     private GameObject player;
@@ -27,6 +28,8 @@ public class CheckpointManager : MonoBehaviour
         checkpointMessages = GetComponentInChildren<Canvas>();
         checkpointMessages.enabled = false;
         GetCheckpoints();
+
+        mainCam = GameObject.FindGameObjectWithTag("Player").GetComponent<CameraPlayerBehavior>();
 
     }
 

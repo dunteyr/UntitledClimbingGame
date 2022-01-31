@@ -11,6 +11,9 @@ public class MovementScript : MonoBehaviour
     public Rigidbody2D player;
     private CapsuleCollider2D playerCollider;
     public CircleCollider2D ground_Check;
+    public HingeJoint2D playerToHandJoint;
+
+    private float handBreakForce = 20;
 
     private CompositeCollider2D terrainCollider;
 
@@ -43,6 +46,7 @@ public class MovementScript : MonoBehaviour
         abilityMenu = GameObject.FindWithTag("Menu").GetComponent<AbilityMenuScript>();
         playerHealth = GetComponent<PlayerHealth>();
         playerCollider = GetComponent<CapsuleCollider2D>();
+        playerToHandJoint = GetComponent<HingeJoint2D>();
     }
 
     // Update is called once per frame
@@ -196,16 +200,23 @@ public class MovementScript : MonoBehaviour
 
     public void SetRagdoll(bool ragdollOn, bool ragdollLetGo = false)
     {
+
+        /*---TURN ON RAGDOLL---*/
         if (ragdollOn)
         {
             player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
 
             //turn on the players hingejoint that is attached to the hand
-            HingeJoint2D playerToHandJoint = GetComponent<HingeJoint2D>();
             playerToHandJoint.enabled = true;
 
             //if ragdoll is on while player is dead, dont let the player add forces to the body
-            if (playerHealth.playerIsDead) { playerMovable = false; }
+            if (playerHealth.playerIsDead) 
+            { 
+                playerMovable = false;
+
+                //allow hand to be ripped off if player is dead
+                playerToHandJoint.breakForce = handBreakForce;
+            }
 
             if (handScript.handRigidBody == null)
             {
@@ -247,30 +258,78 @@ public class MovementScript : MonoBehaviour
             }
         }
 
+        /*---TURN OFF RAGDOLL---*/
         else if(ragdollOn == false)
         {
             StartCoroutine(FixPlayerRotation());
 
-            //turn off the players hingejoint that is attached to the hand
-            HingeJoint2D playerToHandJoint = GetComponent<HingeJoint2D>();
-            playerToHandJoint.enabled = false;
-            if (playerHealth.playerIsDead == false) { playerMovable = true; }
-
-            if (handScript.handRigidBody == null)
+            //if the hand is still attached to the body
+            if(playerToHandJoint != null)
             {
-                Debug.LogWarning("Ragdoll was turned off but handRigidBody is null and cant be turned to Kinematic");
+                //turn off the players hingejoint that is attached to the hand
+                playerToHandJoint.enabled = false;
+                if (playerHealth.playerIsDead == false)
+                {
+                    playerMovable = true;
+
+                    //make sure hand cant be ripped off
+                    playerToHandJoint.breakForce = Mathf.Infinity;
+                }
+
+                if (handScript.handRigidBody == null)
+                {
+                    Debug.LogWarning("Ragdoll was turned off but handRigidBody is null and cant be turned to Kinematic");
+                }
+
+                else if (handScript.handRigidBody != null)
+                {
+                    //sets non ragdoll hand properties
+                    ConfigureHand();
+                }
             }
-
-            else if (handScript.handRigidBody != null)
+            
+            //if the hand is not attached to the body
+            else
             {
-                handScript.handRigidBody.bodyType = RigidbodyType2D.Kinematic;
-                //resets the original weight of hand
-                handScript.handRigidBody.mass = 1f;
-                handScript.handCollider.isTrigger = true;
-                handScript.handControl = true;
-                handScript.handRigidBody.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
+                ReattachHand();
             }
         }
+    }
+    //Sets non ragdoll hand properties
+    private void ConfigureHand()
+    {
+        handScript.handRigidBody.bodyType = RigidbodyType2D.Kinematic;
+        //resets the original weight of hand
+        handScript.handRigidBody.mass = 1f;
+        handScript.handCollider.isTrigger = true;
+        handScript.handControl = true;
+        handScript.handRigidBody.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
+    }
+
+    private void ReattachHand()
+    {
+        //get hand object and create an offset for the hand position
+        GameObject hand = handScript.gameObject;
+        Vector3 offset = new Vector3(handScript.distance, 0);
+
+        //set the position of the hand
+        hand.transform.SetPositionAndRotation(player.transform.position + offset, new Quaternion(0, 0, 0, 0));
+
+        //add a new hinge joint
+        playerToHandJoint = player.gameObject.AddComponent<HingeJoint2D>();
+
+        //connect to hand, set anchor point, and disable (because player will spawn not grabbing anything)
+        playerToHandJoint.connectedBody = handScript.handRigidBody;
+        playerToHandJoint.autoConfigureConnectedAnchor = true;
+        playerToHandJoint.anchor = new Vector2(0, handScript.rotationPointOffset);
+
+        //allow player to move and make sure hand cant be ripped off
+        playerMovable = true;      
+        playerToHandJoint.breakForce = Mathf.Infinity;
+
+        playerToHandJoint.enabled = false;
+
+        ConfigureHand();
     }
 
     private void CheckOverlap()

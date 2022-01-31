@@ -84,5 +84,4 @@ public class CameraPlayerBehavior : MonoBehaviour
 
         return newLensSettings;
     }
-
 }

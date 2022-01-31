@@ -12,8 +12,8 @@ public class HandScriptForReal : MonoBehaviour
     public GameObject player;
     private Vector2 playerPosition;
     private Vector2 rotationPoint;
-    [SerializeField] private float distance = 1;
-    [SerializeField] private float rotationPointOffset;
+    [SerializeField] public float distance = 1;
+    [SerializeField] public float rotationPointOffset;
 
     private SpriteRenderer spriteRend;
     private Color defaultColor = Color.white;
