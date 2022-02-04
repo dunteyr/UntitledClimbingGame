@@ -13,6 +13,8 @@ public class MovementScript : MonoBehaviour
     public CircleCollider2D ground_Check;
     public HingeJoint2D playerToHandJoint;
 
+    public Animator animator;
+
     private float handBreakForce = 20;
 
     private CompositeCollider2D terrainCollider;
@@ -47,6 +49,8 @@ public class MovementScript : MonoBehaviour
         playerHealth = GetComponent<PlayerHealth>();
         playerCollider = GetComponent<CapsuleCollider2D>();
         playerToHandJoint = GetComponent<HingeJoint2D>();
+
+        animator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -67,7 +71,9 @@ public class MovementScript : MonoBehaviour
             MovePlayer();
 
             ManageJump();
-        } 
+        }
+
+        AnimatorControl();
     }
 
     private void ManageJump()
@@ -366,5 +372,11 @@ public class MovementScript : MonoBehaviour
         //add the overlap (plus a small amount just in case) to the player vertical position to get him out of the terrain
         Vector3 positionChange = new Vector3(0, overlap + 0.05f, 0);
         transform.SetPositionAndRotation(transform.position + positionChange, transform.rotation);
+    }
+
+    private void AnimatorControl()
+    {
+        AnimatorControllerParameter runParam = animator.GetParameter(0);
+
     }
 }
