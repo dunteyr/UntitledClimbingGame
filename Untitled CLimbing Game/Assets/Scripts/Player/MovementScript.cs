@@ -14,6 +14,7 @@ public class MovementScript : MonoBehaviour
     public HingeJoint2D playerToHandJoint;
 
     public Animator animator;
+    public GameObject ragdoll;
 
     private float handBreakForce = 20;
 
@@ -51,6 +52,7 @@ public class MovementScript : MonoBehaviour
         playerToHandJoint = GetComponent<HingeJoint2D>();
 
         animator = GetComponentInChildren<Animator>();
+        ragdoll = animator.gameObject;
     }
 
     // Update is called once per frame
@@ -376,7 +378,27 @@ public class MovementScript : MonoBehaviour
 
     private void AnimatorControl()
     {
-        AnimatorControllerParameter runParam = animator.GetParameter(0);
+        //flips the character ragdoll when going in both directions
+        if(horizontalInput < 0)
+        {
+            ragdoll.transform.localScale = new Vector3(-1, 1, 1);
+        }
+
+        else if(horizontalInput > 0)
+        {
+            ragdoll.transform.localScale = new Vector3(1, 1, 1);
+        }
+
+        /* --- Run ---*/
+        animator.SetFloat("Run", Mathf.Abs(horizontalInput));
+
+        /* --- Start Jump --- */
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            animator.SetBool("Jump", true);
+        }
+       
+        /* --- Stop Jump --- */
 
     }
 }
