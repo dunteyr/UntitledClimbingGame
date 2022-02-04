@@ -103,7 +103,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 1464228259694958605}
   m_Bounds:
-    m_Center: {x: -0.0024276972, y: 0.00042307377, z: 0}
+    m_Center: {x: -0.0024278015, y: 0.00042283535, z: 0}
     m_Extent: {x: 0.23569582, y: 0.23578951, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -117,7 +117,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 442593269541083856}
   m_BodyType: 0
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
@@ -250,7 +250,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 9058650997358122051}
   m_Bounds:
-    m_Center: {x: -0.0026581436, y: 0.00042271614, z: 0}
+    m_Center: {x: -0.0026583225, y: 0.00042295456, z: 0}
     m_Extent: {x: 0.2062495, y: 0.07421057, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -264,7 +264,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 469259678743695784}
   m_BodyType: 0
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
@@ -307,7 +307,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0.18, y: 0}
-  m_ConnectedAnchor: {x: -0.18131572, y: 0.1365788}
+  m_ConnectedAnchor: {x: -0.1813159, y: 0.1365788}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -423,7 +423,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 3104873826190547850}
   m_Bounds:
-    m_Center: {x: -0.0024760962, y: 0.00042295456, z: 0}
+    m_Center: {x: -0.0024762154, y: 0.00042295456, z: 0}
     m_Extent: {x: 0.18263158, y: 0.15526316, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -437,7 +437,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 839717571463883808}
   m_BodyType: 0
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
@@ -629,7 +629,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 861509513478294492}
   m_Bounds:
-    m_Center: {x: -0.0024762526, y: 0.0012911409, z: 0}
+    m_Center: {x: -0.0024766997, y: 0.0012913793, z: 0}
     m_Extent: {x: 0.08263053, y: 0.2428158, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -643,7 +643,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1454466268455247495}
   m_BodyType: 0
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
@@ -833,7 +833,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 3624563471291691457}
   m_Bounds:
-    m_Center: {x: -0.0024763346, y: 0.00042323768, z: 0}
+    m_Center: {x: -0.0024762154, y: 0.00042323768, z: 0}
     m_Extent: {x: 0.22052628, y: 0.07420997, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -847,7 +847,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1645171874257134835}
   m_BodyType: 0
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
@@ -890,7 +890,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0.19, y: 0}
-  m_ConnectedAnchor: {x: -0.21263129, y: 0}
+  m_ConnectedAnchor: {x: -0.21263123, y: 0}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -1058,7 +1058,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 509619701238268813}
   m_Bounds:
-    m_Center: {x: -0.0019494072, y: 0.00032164156, z: 0}
+    m_Center: {x: -0.0019493774, y: 0.00032164156, z: 0}
     m_Extent: {x: 0.082631074, y: 0.22920531, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -1072,7 +1072,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2495858821320797092}
   m_BodyType: 0
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
@@ -1256,7 +1256,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 849710308011810295}
   m_Bounds:
-    m_Center: {x: -0.0024758875, y: 0.00042797625, z: 0}
+    m_Center: {x: -0.0024757385, y: 0.00042797625, z: 0}
     m_Extent: {x: 0.18473688, y: 0.20946845, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -1270,7 +1270,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2921295911376045262}
   m_BodyType: 0
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
@@ -1501,7 +1501,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 3472633456587829905}
   m_Bounds:
-    m_Center: {x: -0.002475977, y: 0.0004227087, z: 0}
+    m_Center: {x: -0.0024757385, y: 0.0004227087, z: 0}
     m_Extent: {x: 0.22052632, y: 0.07420947, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -1515,7 +1515,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4563208390759112272}
   m_BodyType: 0
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
@@ -1558,7 +1558,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: -0.19, y: 0}
-  m_ConnectedAnchor: {x: 0.21315771, y: 0}
+  m_ConnectedAnchor: {x: 0.21315765, y: 0}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -1736,7 +1736,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 8276153310939041485}
   m_Bounds:
-    m_Center: {x: -0.0024758205, y: 0.00077295303, z: 0}
+    m_Center: {x: -0.0024762228, y: 0.00077295303, z: 0}
     m_Extent: {x: 0.08263053, y: 0.22965004, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -1750,7 +1750,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5342945483548825836}
   m_BodyType: 0
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
@@ -1931,7 +1931,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 7881714027056708494}
   m_Bounds:
-    m_Center: {x: -0.0024759173, y: 0.00042295456, z: 0}
+    m_Center: {x: -0.0024762154, y: 0.00042295456, z: 0}
     m_Extent: {x: 0.082630515, y: 0.24315786, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -1945,7 +1945,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5969420486667139592}
   m_BodyType: 0
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
@@ -1988,7 +1988,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0.22}
-  m_ConnectedAnchor: {x: 0.0015790462, y: -0.22315788}
+  m_ConnectedAnchor: {x: 0.0015792847, y: -0.22315788}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -2196,7 +2196,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 7584737705637261226}
   m_Bounds:
-    m_Center: {x: -0.0019497871, y: 0.0004227087, z: 0}
+    m_Center: {x: -0.0019499063, y: 0.0004229471, z: 0}
     m_Extent: {x: 0.2068421, y: 0.07420947, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -2210,7 +2210,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8752308142351978927}
   m_BodyType: 0
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.1
@@ -2253,7 +2253,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: -0.18, y: 0}
-  m_ConnectedAnchor: {x: 0.1781581, y: 0.1365788}
+  m_ConnectedAnchor: {x: 0.17815828, y: 0.1365788}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
