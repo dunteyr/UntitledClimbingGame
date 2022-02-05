@@ -63,6 +63,10 @@ public class MovementScript : MonoBehaviour
         {
             jumpInput = true;
         }
+
+        AnimatorControl();
+
+        Debug.Log(jumpInput);
     }
 
     void FixedUpdate()
@@ -74,8 +78,6 @@ public class MovementScript : MonoBehaviour
 
             ManageJump();
         }
-
-        AnimatorControl();
     }
 
     private void ManageJump()
@@ -376,7 +378,7 @@ public class MovementScript : MonoBehaviour
         transform.SetPositionAndRotation(transform.position + positionChange, transform.rotation);
     }
 
-    private void AnimatorControl()
+    public void AnimatorControl()
     {
         //flips the character ragdoll when going in both directions
         if(horizontalInput < 0)
@@ -393,12 +395,20 @@ public class MovementScript : MonoBehaviour
         animator.SetFloat("Run", Mathf.Abs(horizontalInput));
 
         /* --- Start Jump --- */
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (jumpInput)
         {
-            animator.SetBool("Jump", true);
+            JumpAnimation(true);
         }
        
         /* --- Stop Jump --- */
+        else if (jumpInput == false)
+        {
+            //JumpAnimation(false);
+        }
+    }
 
+    public void JumpAnimation(bool jumpBool = true)
+    {
+        animator.SetBool("Jump", jumpBool);
     }
 }
