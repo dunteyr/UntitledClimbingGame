@@ -435,12 +435,12 @@ public class MovementScript : MonoBehaviour
     {
         if (turnOn)
         {
-
+            animator.SetBool("isHanging", true);
         }
 
         else
         {
-
+            animator.SetBool("isHanging", false);
         }
     }
 }
