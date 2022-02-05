@@ -403,12 +403,44 @@ public class MovementScript : MonoBehaviour
         /* --- Stop Jump --- */
         else if (jumpInput == false)
         {
-            //JumpAnimation(false);
+            JumpAnimation(false);
         }
+
+        /* --- Falling --- */
+        if(isGrounded == false)
+        {
+            animator.SetBool("isFalling", true);
+        }
+        else { animator.SetBool("isFalling", false); }
     }
 
     public void JumpAnimation(bool jumpBool = true)
     {
-        animator.SetBool("Jump", jumpBool);
+        if(jumpBool == false)
+        {
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
+            {
+                
+            }
+            else { animator.SetBool("Jump", jumpBool); }
+        }
+
+        else if (jumpBool)
+        {
+            animator.SetBool("Jump", jumpBool);
+        }      
+    }
+
+    public void HangAnimation(bool turnOn)
+    {
+        if (turnOn)
+        {
+
+        }
+
+        else
+        {
+
+        }
     }
 }
