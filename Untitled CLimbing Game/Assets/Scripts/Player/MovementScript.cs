@@ -7,11 +7,15 @@ public class MovementScript : MonoBehaviour
     public AbilityMenuScript abilityMenu;
     private HandScriptForReal handScript;
     private PlayerHealth playerHealth;
+    private PlayerAnimation animScript;
 
     public Rigidbody2D player;
     private CapsuleCollider2D playerCollider;
     public CircleCollider2D ground_Check;
     public HingeJoint2D playerToHandJoint;
+
+    private GameObject ragdoll;
+    private GameObject[] limbs;
 
     private float handBreakForce = 20;
 
@@ -45,8 +49,13 @@ public class MovementScript : MonoBehaviour
         handScript = GetComponentInChildren<HandScriptForReal>();
         abilityMenu = GameObject.FindWithTag("Menu").GetComponent<AbilityMenuScript>();
         playerHealth = GetComponent<PlayerHealth>();
+        animScript = GetComponent<PlayerAnimation>();
+
         playerCollider = GetComponent<CapsuleCollider2D>();
         playerToHandJoint = GetComponent<HingeJoint2D>();
+
+        ragdoll = GetComponentInChildren<Animator>().gameObject;
+        limbs = GameObject.FindGameObjectsWithTag("Limb");
     }
 
     // Update is called once per frame
@@ -296,6 +305,111 @@ public class MovementScript : MonoBehaviour
             }
         }
     }
+
+    public void NewSetRagdoll(bool ragdollOn, bool ragdollLetGo = false)
+    {
+        if (ragdollOn)
+        {
+
+            //turn on the players hingejoint that is attached to the hand
+            playerToHandJoint.enabled = true;
+
+            //if ragdoll is on while player is dead, dont let the player add forces to the body
+            if (playerHealth.playerIsDead)
+            {
+                playerMovable = false;
+                animScript.animationOn = false;
+
+                //allow hand to be ripped off if player is dead
+                playerToHandJoint.breakForce = handBreakForce;
+            }
+
+            if (handScript.handRigidBody == null)
+            {
+                Debug.LogWarning("Ragdoll was turned on but handRigidBody is null and cant be turned to dynamic");
+            }
+
+            else if (handScript.handRigidBody != null)
+            {
+                handScript.handRigidBody.bodyType = RigidbodyType2D.Dynamic;
+                handScript.handCollider.isTrigger = false;
+                handScript.handControl = false;
+                handScript.handRigidBody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+
+                //this is for when you want to let go of something on ragdoll
+                if (ragdollLetGo)
+                {
+                    if (handScript.isGrabbing)
+                    {
+                        if (handScript.terrainHingeJoint != null)
+                        {
+                            handScript.LetGo(handScript.terrainHingeJoint, true);
+                        }
+                        else if (handScript.handHingeJoint != null)
+                        {
+                            handScript.LetGo(handScript.handHingeJoint, true);
+                        }
+                        else if (handScript.ropeHingeJoint != null)
+                        {
+                            handScript.LetGo(handScript.ropeHingeJoint, true);
+                        }
+                    }
+                }
+
+                //if the hand is grabbing something while ragdolled its mass needs to stay at 1 
+                if (handScript.isGrabbing) { handScript.handRigidBody.mass = 1; }
+                //otherwise it should be very light so it doesnt pull player around
+                else { handScript.handRigidBody.mass = 0.01f; }
+
+            }
+        }
+
+        else if(ragdollOn == false)
+        {
+            StartCoroutine(FixPlayerRotation());
+
+            //if the hand is still attached to the body
+            if (playerToHandJoint != null)
+            {
+                //turn off the players hingejoint that is attached to the hand
+                playerToHandJoint.enabled = false;
+                if (playerHealth.playerIsDead == false)
+                {
+                    playerMovable = true;
+                    animScript.animationOn = true;
+
+                    //make sure hand cant be ripped off
+                    playerToHandJoint.breakForce = Mathf.Infinity;
+                }
+
+                if (handScript.handRigidBody == null)
+                {
+                    Debug.LogWarning("Ragdoll was turned off but handRigidBody is null and cant be turned to Kinematic");
+                }
+
+                else if (handScript.handRigidBody != null)
+                {
+                    //sets non ragdoll hand properties
+                    ConfigureHand();
+                }
+            }
+
+            //if the hand is not attached to the body
+            else
+            {
+                ReattachHand();
+            }
+        }
+    }
+
+    public void ConfigureRagdoll()
+    {
+        for (int i = 0; i < limbs.Length; i++)
+        {
+            Debug.Log("Limby Limb Limb");
+        }
+    }
+
     //Sets non ragdoll hand properties
     private void ConfigureHand()
     {

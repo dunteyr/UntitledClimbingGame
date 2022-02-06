@@ -27,6 +27,7 @@ TagManager:
   - Sky
   - FarMountains
   - CloseMountains
+  - limb
   layers:
   - Default
   - TransparentFX

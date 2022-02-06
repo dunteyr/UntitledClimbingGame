@@ -8,18 +8,25 @@ public class PlayerAnimation : MonoBehaviour
     public Animator animator;
     public GameObject ragdoll;
 
+    public bool animationOn;
+
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
         moveScript = GetComponent<MovementScript>();
         ragdoll = animator.gameObject;
+
+        animationOn = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        AnimatorControl();
+        if (animationOn)
+        {
+            AnimatorControl();
+        }      
     }
 
     public void AnimatorControl()
