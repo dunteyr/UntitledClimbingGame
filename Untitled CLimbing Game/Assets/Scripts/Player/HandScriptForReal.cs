@@ -6,6 +6,7 @@ public class HandScriptForReal : MonoBehaviour
 {
     public AbilityMenuScript abilityMenu;
     private MovementScript movementScript;
+    private PlayerAnimation animScript;
 
     public Collider2D handCollider;
     public Rigidbody2D handRigidBody;
@@ -39,6 +40,7 @@ public class HandScriptForReal : MonoBehaviour
         handControl = true;
 
         movementScript = player.GetComponent<MovementScript>();
+        animScript = player.GetComponent<PlayerAnimation>();
     }
 
     void Update()
@@ -165,7 +167,7 @@ public class HandScriptForReal : MonoBehaviour
             if (leftMouseClicked)
             {
                 isGrabbing = true;
-                movementScript.HangAnimation(true);
+                animScript.HangAnimation(true);
                 leftMouseClicked = false;
                 //so player cant hold jump while pressing left click and mess stuff up
                 jumpInput = false;
@@ -278,7 +280,7 @@ public class HandScriptForReal : MonoBehaviour
     {
         spriteRend.color = defaultColor;
         isGrabbing = false;
-        movementScript.HangAnimation(false);
+        animScript.HangAnimation(false);
         if(jointToLetGo == null)
         {
             Debug.LogWarning("There is no hinge joint attached yet LetGo() was executed");
