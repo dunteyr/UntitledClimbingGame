@@ -331,8 +331,9 @@ public class MovementScript : MonoBehaviour
                 playerMovable = false;
                 animScript.animationOn = false;
                 ragdoll.transform.SetParent(null);
-                //make the hand invisible
+                //make the hand invisible and turn off collider
                 handScript.gameObject.layer = 8;
+                handScript.gameObject.GetComponent<CircleCollider2D>().enabled = false;
                 //player.gameObject.SetActive(false);
 
                 //Sets all the limbs to be ragdolled (Affected by gravity and non animated)
@@ -398,8 +399,9 @@ public class MovementScript : MonoBehaviour
                 {
                     playerMovable = true;
                     animScript.animationOn = true;
-                    //make the hand visible
+                    //make the hand visible and turn on collider
                     handScript.gameObject.layer = 0;
+                    handScript.gameObject.GetComponent<CircleCollider2D>().enabled = true;
 
                     //Sets every limb to non ragdoll
                     ConfigureLimbs(false);
@@ -504,6 +506,8 @@ public class MovementScript : MonoBehaviour
 
     }
 
+    /* --- DEPRECATED --- */
+    //Ragdoll system switched from capsule to rigged ragdoll. Hand cant dettach anymore so doesnt need reconfiguring. Can PROBABLY be deleted but will keep for now
     //Sets non ragdoll hand properties
     private void ConfigureHand()
     {
@@ -515,6 +519,8 @@ public class MovementScript : MonoBehaviour
         handScript.handRigidBody.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
     }
 
+    /* --- DEPRECATED --- */
+    //Ragdoll system switched from capsule to rigged ragdoll. Hand cant dettach anymore. Can be deleted PROBABLY but will keep for now
     private void ReattachHand()
     {
         //get hand object and create an offset for the hand position
@@ -532,15 +538,13 @@ public class MovementScript : MonoBehaviour
         playerToHandJoint.autoConfigureConnectedAnchor = true;
         playerToHandJoint.anchor = new Vector2(0, handScript.rotationPointOffset);
 
-        //allow player to move and make sure hand cant be ripped off
-        playerMovable = true;      
-        playerToHandJoint.breakForce = Mathf.Infinity;
+        //Once hand is attached. Redo the ragdoll function
+        SetRagdoll(false);
 
-        playerToHandJoint.enabled = false;
-
-        ConfigureHand();
     }
 
+    /* --- DEPRECATED --- */
+    //Overlap fixing is done by the FixPlayerRotation coroutine. This function can be deleted
     private void CheckOverlap()
     {
         Debug.Log("Overlap check triggered");
@@ -563,6 +567,8 @@ public class MovementScript : MonoBehaviour
         }  
     }
 
+    /* --- DEPRECATED --- */
+    //Overlap fixing is done by the FixPlayerRotation coroutine. This function can be deleted
     private void FixOverlap()
     {
         //get a point on the composite collider perimeter closest to top of player
