@@ -21,6 +21,7 @@ public class MovementScript : MonoBehaviour
     private GameObject[] limbs;
 
     private float handBreakForce = 20;
+    public Collision2D lastFallCollision;
 
     private CompositeCollider2D terrainCollider;
 
@@ -44,6 +45,7 @@ public class MovementScript : MonoBehaviour
     [SerializeField] private float maxSpeed = 13;
     [SerializeField] private float fallDamageThreshold = 24;
     [SerializeField] public float fallDeathThreshold = 35;
+    public float deathForceAmount = 0.5f;
 
 
     // Start is called before the first frame update
@@ -196,6 +198,9 @@ public class MovementScript : MonoBehaviour
         //when the collision speed is over the fall damage min
         if (collision.relativeVelocity.magnitude >= fallDamageThreshold)
         {
+            //store the collision info in case its needed for player death force
+            lastFallCollision = collision;
+
             float collisionSpeed = collision.relativeVelocity.magnitude;
 
             //difference between the min speed to get hurt and the death speed (both changeable)
@@ -326,10 +331,14 @@ public class MovementScript : MonoBehaviour
                 playerMovable = false;
                 animScript.animationOn = false;
                 ragdoll.transform.SetParent(null);
-                player.gameObject.SetActive(false);
+                //make the hand invisible
+                handScript.gameObject.layer = 8;
+                //player.gameObject.SetActive(false);
 
                 //Sets all the limbs to be ragdolled (Affected by gravity and non animated)
-                ConfigureLimbs(ragdollOn);               
+                ConfigureLimbs(ragdollOn);
+                //applies force to ragdoll (collision data is the collision of the last fall damage)
+                DeathForce(lastFallCollision);
 
                 //allow hand to be ripped off if player is dead
                 playerToHandJoint.breakForce = handBreakForce;
@@ -377,7 +386,7 @@ public class MovementScript : MonoBehaviour
 
         else if(ragdollOn == false)
         {
-            player.gameObject.SetActive(true);
+            //player.gameObject.SetActive(true);
             StartCoroutine(FixPlayerRotation());
 
             //if the hand is still attached to the body
@@ -389,9 +398,11 @@ public class MovementScript : MonoBehaviour
                 {
                     playerMovable = true;
                     animScript.animationOn = true;
+                    //make the hand visible
+                    handScript.gameObject.layer = 0;
 
                     //Sets every limb to non ragdoll
-                    ConfigureLimbs(ragdollOn);
+                    ConfigureLimbs(false);
 
                     //make sure hand cant be ripped off
                     playerToHandJoint.breakForce = Mathf.Infinity;
@@ -450,6 +461,7 @@ public class MovementScript : MonoBehaviour
                 {
                     limbs[i].GetComponent<SpriteSkin>().enabled = true;
                 }
+                else { Debug.LogError("Sprite skin was null. Couldnt turn off ragdoll"); }
             }
         }
     }
@@ -463,6 +475,33 @@ public class MovementScript : MonoBehaviour
         ragdoll.transform.Find("Pelvis").SetPositionAndRotation(player.gameObject.transform.position, player.gameObject.transform.rotation);
         //sets the ragdoll parents' parent to be the player controller
         ragdoll.transform.SetParent(player.gameObject.transform);
+    }
+
+    //This function puts a force on the player ragdoll after death using the collision of the previous fall damage. Called in SetRagdoll()
+    private void DeathForce(Collision2D collision)
+    {
+        //Check for collision data
+        if(collision == null) { Debug.Log("No collision data for death force"); }
+
+        else
+        {
+            //Check if the ragdoll has been unchilded from player
+            if (ragdoll.transform.parent != null)
+            {
+                Debug.LogError("ragdoll was given death force while still a child of player controller");
+            }
+
+            else
+            {
+                //Get the ragdoll pelvis
+                Rigidbody2D pelvis = ragdoll.transform.Find("Pelvis").GetComponent<Rigidbody2D>();
+                //Get the death force from collision data
+                Vector2 deathForce = collision.relativeVelocity;
+                //apply the death force to the pelvis
+                pelvis.AddForce(deathForce * deathForceAmount, ForceMode2D.Impulse);
+            }
+        }
+
     }
 
     //Sets non ragdoll hand properties

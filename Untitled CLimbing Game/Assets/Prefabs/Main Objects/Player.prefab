@@ -211,6 +211,7 @@ MonoBehaviour:
   player: {fileID: 4437752475288588653}
   ground_Check: {fileID: 4437752474646629563}
   playerToHandJoint: {fileID: 0}
+  ragdoll: {fileID: 0}
   torque: 0.5
   horizontalInput: 0
   jumpInput: 0
@@ -224,6 +225,7 @@ MonoBehaviour:
   maxSpeed: 13
   fallDamageThreshold: 24
   fallDeathThreshold: 35
+  deathForceAmount: 0.5
 --- !u!114 &4437752475288588649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,6 +256,7 @@ MonoBehaviour:
   abilityMenu: {fileID: 0}
   cameraBrain: {fileID: 0}
   virtualCamera: {fileID: 0}
+  farCam: {fileID: 0}
   currentLensSettings:
     FieldOfView: 0
     OrthographicSize: 0
