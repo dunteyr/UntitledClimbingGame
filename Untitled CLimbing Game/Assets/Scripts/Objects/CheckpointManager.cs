@@ -75,7 +75,7 @@ public class CheckpointManager : MonoBehaviour
 
             //move player to spawn point, give him his health back and then activate him
             player.transform.SetPositionAndRotation(GetSpawnLocation(), player.transform.rotation);
-            player.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0); //sets players velocity to zero
+            player.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0); //sets players velocity to zero           
             if (abilityMenu.ragdollActive == false) { player.GetComponent<MovementScript>().SetRagdoll(false); } //player stays ragolled if ragdoll ability is on
             playerHealth.SetPlayerHealth(playerHealth.playerMaxHealth);
             playerHealth.playerIsDead = false;
@@ -87,7 +87,9 @@ public class CheckpointManager : MonoBehaviour
             player.transform.SetPositionAndRotation(GetSpawnLocation(), playerRotation);
             player.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0); //sets players velocity to zero
             playerHealth.SetPlayerHealth(playerHealth.playerMaxHealth);
+
             if (abilityMenu.ragdollActive == false) { player.GetComponent<MovementScript>().SetRagdoll(false); } //player stays ragolled if ragdoll ability is on
+            player.GetComponent<MovementScript>().AttachRagToPlayer();
             playerHealth.playerIsDead = false;
         }
     }

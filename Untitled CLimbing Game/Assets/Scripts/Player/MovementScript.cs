@@ -8,14 +8,16 @@ public class MovementScript : MonoBehaviour
     public AbilityMenuScript abilityMenu;
     private HandScriptForReal handScript;
     private PlayerHealth playerHealth;
+    private CameraPlayerBehavior camScript;
     private PlayerAnimation animScript;
+    private CheckpointManager checkpointMngr;
 
     public Rigidbody2D player;
     private CapsuleCollider2D playerCollider;
     public CircleCollider2D ground_Check;
     public HingeJoint2D playerToHandJoint;
 
-    private GameObject ragdoll;
+    public GameObject ragdoll;
     private GameObject[] limbs;
 
     private float handBreakForce = 20;
@@ -51,6 +53,8 @@ public class MovementScript : MonoBehaviour
         abilityMenu = GameObject.FindWithTag("Menu").GetComponent<AbilityMenuScript>();
         playerHealth = GetComponent<PlayerHealth>();
         animScript = GetComponent<PlayerAnimation>();
+        camScript = GetComponent<CameraPlayerBehavior>();
+        checkpointMngr = GameObject.FindGameObjectWithTag("CheckpointManager").GetComponent<CheckpointManager>();
 
         playerCollider = GetComponent<CapsuleCollider2D>();
         playerToHandJoint = GetComponent<HingeJoint2D>();
@@ -209,7 +213,7 @@ public class MovementScript : MonoBehaviour
         }
     }
 
-    public void SetRagdoll(bool ragdollOn, bool ragdollLetGo = false)
+    public void OldSetRagdoll(bool ragdollOn, bool ragdollLetGo = false)
     {
 
         /*---TURN ON RAGDOLL---*/
@@ -307,10 +311,11 @@ public class MovementScript : MonoBehaviour
         }
     }
 
-    public void NewSetRagdoll(bool ragdollOn, bool ragdollLetGo = false)
+    public void SetRagdoll(bool ragdollOn, bool ragdollLetGo = false)
     {
         if (ragdollOn)
         {
+            player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
 
             //turn on the players hingejoint that is attached to the hand
             playerToHandJoint.enabled = true;
@@ -320,7 +325,11 @@ public class MovementScript : MonoBehaviour
             {
                 playerMovable = false;
                 animScript.animationOn = false;
-                ConfigureLimbs(ragdollOn);
+                ragdoll.transform.SetParent(null);
+                player.gameObject.SetActive(false);
+
+                //Sets all the limbs to be ragdolled (Affected by gravity and non animated)
+                ConfigureLimbs(ragdollOn);               
 
                 //allow hand to be ripped off if player is dead
                 playerToHandJoint.breakForce = handBreakForce;
@@ -368,6 +377,7 @@ public class MovementScript : MonoBehaviour
 
         else if(ragdollOn == false)
         {
+            player.gameObject.SetActive(true);
             StartCoroutine(FixPlayerRotation());
 
             //if the hand is still attached to the body
@@ -379,6 +389,9 @@ public class MovementScript : MonoBehaviour
                 {
                     playerMovable = true;
                     animScript.animationOn = true;
+
+                    //Sets every limb to non ragdoll
+                    ConfigureLimbs(ragdollOn);
 
                     //make sure hand cant be ripped off
                     playerToHandJoint.breakForce = Mathf.Infinity;
@@ -420,7 +433,6 @@ public class MovementScript : MonoBehaviour
                 {
                     limbs[i].GetComponent<SpriteSkin>().enabled = false;
                 }
-                //Debug.Log("Limby Limb Limb");
             }
         }
 
@@ -440,6 +452,17 @@ public class MovementScript : MonoBehaviour
                 }
             }
         }
+    }
+
+    //Player rig dettaches from player controller on ragdoll. this function reattaches them. (To respawn correctly)
+    public void AttachRagToPlayer()
+    {
+        //sets the ragdoll parent to the player position
+        ragdoll.transform.SetPositionAndRotation(player.gameObject.transform.position, player.gameObject.transform.rotation); 
+        //sets the pelvis to the player position (And the ragdoll parent position)
+        ragdoll.transform.Find("Pelvis").SetPositionAndRotation(player.gameObject.transform.position, player.gameObject.transform.rotation);
+        //sets the ragdoll parents' parent to be the player controller
+        ragdoll.transform.SetParent(player.gameObject.transform);
     }
 
     //Sets non ragdoll hand properties

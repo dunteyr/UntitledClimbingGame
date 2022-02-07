@@ -6,9 +6,11 @@ using Cinemachine;
 public class CameraPlayerBehavior : MonoBehaviour
 {
     public AbilityMenuScript abilityMenu;
+    private MovementScript moveScript;
 
     public CinemachineBrain cameraBrain;
     public CinemachineVirtualCamera virtualCamera;
+    public CinemachineVirtualCamera farCam;
     public LensSettings currentLensSettings;
     public LensSettings newLensSettings;
     private Rigidbody2D player;
@@ -30,8 +32,10 @@ public class CameraPlayerBehavior : MonoBehaviour
     {
         cameraBrain = GameObject.FindWithTag("MainCamera").GetComponent<CinemachineBrain>();
         virtualCamera = GameObject.FindWithTag("Vcam1").GetComponent<CinemachineVirtualCamera>();
+        farCam = GameObject.FindWithTag("FarCam").GetComponent<CinemachineVirtualCamera>();
         currentLensSettings = virtualCamera.m_Lens;
         player = GetComponent<Rigidbody2D>();
+        moveScript = GetComponent<MovementScript>();
     }
 
     // Update is called once per frame
