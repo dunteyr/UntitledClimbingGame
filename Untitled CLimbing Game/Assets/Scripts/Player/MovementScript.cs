@@ -467,8 +467,8 @@ public class MovementScript : MonoBehaviour
                 {
                     limbs[i].GetComponent<SpriteSkin>().enabled = true;
                     //Setting limbs back to their default positions
-                    limbs[i].transform.position = defaultLimbPos[i].transform.position;
-                    limbs[i].transform.rotation = defaultLimbPos[i].transform.rotation;
+                    limbs[i].transform.rotation = defaultLimbPos[i].rotation;
+
                 }
                 else { Debug.LogError("Sprite skin was null. Couldnt turn off ragdoll"); }
             }
