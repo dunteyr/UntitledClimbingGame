@@ -222,104 +222,6 @@ public class MovementScript : MonoBehaviour
         }
     }
 
-    public void OldSetRagdoll(bool ragdollOn, bool ragdollLetGo = false)
-    {
-
-        /*---TURN ON RAGDOLL---*/
-        if (ragdollOn)
-        {
-            player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-
-            //turn on the players hingejoint that is attached to the hand
-            playerToHandJoint.enabled = true;
-
-            //if ragdoll is on while player is dead, dont let the player add forces to the body
-            if (playerHealth.playerIsDead) 
-            { 
-                playerMovable = false;
-
-                //allow hand to be ripped off if player is dead
-                playerToHandJoint.breakForce = handBreakForce;
-            }
-
-            if (handScript.handRigidBody == null)
-            {
-                Debug.LogWarning("Ragdoll was turned on but handRigidBody is null and cant be turned to dynamic");
-            }
-
-            else if (handScript.handRigidBody != null)
-            {
-                handScript.handRigidBody.bodyType = RigidbodyType2D.Dynamic;
-                handScript.handCollider.isTrigger = false;
-                handScript.handControl = false;
-                handScript.handRigidBody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-
-                //this is for when you want to let go of something on ragdoll
-                if (ragdollLetGo)
-                {
-                    if (handScript.isGrabbing)
-                    {
-                        if (handScript.terrainHingeJoint != null)
-                        {
-                            handScript.LetGo(handScript.terrainHingeJoint, true);
-                        }
-                        else if (handScript.handHingeJoint != null)
-                        {
-                            handScript.LetGo(handScript.handHingeJoint, true);
-                        }
-                        else if (handScript.ropeHingeJoint != null)
-                        {
-                            handScript.LetGo(handScript.ropeHingeJoint, true);
-                        }
-                    }
-                }
-
-                //if the hand is grabbing something while ragdolled its mass needs to stay at 1 
-                if (handScript.isGrabbing) { handScript.handRigidBody.mass = 1; }
-                //otherwise it should be very light so it doesnt pull player around
-                else { handScript.handRigidBody.mass = 0.01f; }
-
-            }
-        }
-
-        /*---TURN OFF RAGDOLL---*/
-        else if(ragdollOn == false)
-        {
-            StartCoroutine(FixPlayerRotation());
-
-            //if the hand is still attached to the body
-            if(playerToHandJoint != null)
-            {
-                //turn off the players hingejoint that is attached to the hand
-                playerToHandJoint.enabled = false;
-                if (playerHealth.playerIsDead == false)
-                {
-                    playerMovable = true;
-
-                    //make sure hand cant be ripped off
-                    playerToHandJoint.breakForce = Mathf.Infinity;
-                }
-
-                if (handScript.handRigidBody == null)
-                {
-                    Debug.LogWarning("Ragdoll was turned off but handRigidBody is null and cant be turned to Kinematic");
-                }
-
-                else if (handScript.handRigidBody != null)
-                {
-                    //sets non ragdoll hand properties
-                    ConfigureHand();
-                }
-            }
-            
-            //if the hand is not attached to the body
-            else
-            {
-                ReattachHand();
-            }
-        }
-    }
-
     public void SetRagdoll(bool ragdollOn, bool ragdollLetGo = false)
     {
         if (ragdollOn)
@@ -597,4 +499,105 @@ public class MovementScript : MonoBehaviour
         Vector3 positionChange = new Vector3(0, overlap + 0.05f, 0);
         transform.SetPositionAndRotation(transform.position + positionChange, transform.rotation);
     }
+
+    /* --- DEPRECATED --- */
+    //This function was replaced by SetRagdoll and can PROBABLY be deleted.
+    public void OldSetRagdoll(bool ragdollOn, bool ragdollLetGo = false)
+    {
+
+        /*---TURN ON RAGDOLL---*/
+        if (ragdollOn)
+        {
+            player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+
+            //turn on the players hingejoint that is attached to the hand
+            playerToHandJoint.enabled = true;
+
+            //if ragdoll is on while player is dead, dont let the player add forces to the body
+            if (playerHealth.playerIsDead)
+            {
+                playerMovable = false;
+
+                //allow hand to be ripped off if player is dead
+                playerToHandJoint.breakForce = handBreakForce;
+            }
+
+            if (handScript.handRigidBody == null)
+            {
+                Debug.LogWarning("Ragdoll was turned on but handRigidBody is null and cant be turned to dynamic");
+            }
+
+            else if (handScript.handRigidBody != null)
+            {
+                handScript.handRigidBody.bodyType = RigidbodyType2D.Dynamic;
+                handScript.handCollider.isTrigger = false;
+                handScript.handControl = false;
+                handScript.handRigidBody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+
+                //this is for when you want to let go of something on ragdoll
+                if (ragdollLetGo)
+                {
+                    if (handScript.isGrabbing)
+                    {
+                        if (handScript.terrainHingeJoint != null)
+                        {
+                            handScript.LetGo(handScript.terrainHingeJoint, true);
+                        }
+                        else if (handScript.handHingeJoint != null)
+                        {
+                            handScript.LetGo(handScript.handHingeJoint, true);
+                        }
+                        else if (handScript.ropeHingeJoint != null)
+                        {
+                            handScript.LetGo(handScript.ropeHingeJoint, true);
+                        }
+                    }
+                }
+
+                //if the hand is grabbing something while ragdolled its mass needs to stay at 1 
+                if (handScript.isGrabbing) { handScript.handRigidBody.mass = 1; }
+                //otherwise it should be very light so it doesnt pull player around
+                else { handScript.handRigidBody.mass = 0.01f; }
+
+            }
+        }
+
+        /*---TURN OFF RAGDOLL---*/
+        else if (ragdollOn == false)
+        {
+            StartCoroutine(FixPlayerRotation());
+
+            //if the hand is still attached to the body
+            if (playerToHandJoint != null)
+            {
+                //turn off the players hingejoint that is attached to the hand
+                playerToHandJoint.enabled = false;
+                if (playerHealth.playerIsDead == false)
+                {
+                    playerMovable = true;
+
+                    //make sure hand cant be ripped off
+                    playerToHandJoint.breakForce = Mathf.Infinity;
+                }
+
+                if (handScript.handRigidBody == null)
+                {
+                    Debug.LogWarning("Ragdoll was turned off but handRigidBody is null and cant be turned to Kinematic");
+                }
+
+                else if (handScript.handRigidBody != null)
+                {
+                    //sets non ragdoll hand properties
+                    ConfigureHand();
+                }
+            }
+
+            //if the hand is not attached to the body
+            else
+            {
+                ReattachHand();
+            }
+        }
+    }
+
 }
