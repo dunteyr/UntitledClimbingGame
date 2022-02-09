@@ -19,7 +19,8 @@ public class MovementScript : MonoBehaviour
 
     public GameObject ragdoll;
     private GameObject[] limbs;
-    [SerializeField] private Transform[] defaultLimbPos;
+    [SerializeField] private Quaternion[] defaultLimbRot;
+    [SerializeField] private Vector3[] defaultLimbPos;
 
     private float handBreakForce = 20;
     public Collision2D lastFallCollision;
@@ -64,7 +65,8 @@ public class MovementScript : MonoBehaviour
 
         ragdoll = GetComponentInChildren<Animator>().gameObject;
         limbs = GameObject.FindGameObjectsWithTag("Limb");
-        defaultLimbPos = new Transform[limbs.Length];
+        defaultLimbRot = new Quaternion[limbs.Length];
+        defaultLimbPos = new Vector3[limbs.Length];
         //Sets the limbs' default positions
         InitializeLimbPositions();
     }
@@ -368,8 +370,10 @@ public class MovementScript : MonoBehaviour
                 if (limbs[i].GetComponent<SpriteSkin>() != null)
                 {
                     limbs[i].GetComponent<SpriteSkin>().enabled = true;
-                    //Setting limbs back to their default positions
-                    limbs[i].transform.rotation = defaultLimbPos[i].rotation;
+
+                    //Setting limbs back to their tpose positions
+                    limbs[i].transform.rotation = defaultLimbRot[i];
+                    limbs[i].transform.localPosition = defaultLimbPos[i];
 
                 }
                 else { Debug.LogError("Sprite skin was null. Couldnt turn off ragdoll"); }
@@ -381,7 +385,8 @@ public class MovementScript : MonoBehaviour
     {
         for (int i = 0; i < limbs.Length; i++)
         {
-            defaultLimbPos[i] = limbs[i].transform;
+            defaultLimbRot[i] = limbs[i].transform.rotation;
+            defaultLimbPos[i] = limbs[i].transform.localPosition;
         }
     }
 
