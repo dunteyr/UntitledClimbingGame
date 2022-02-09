@@ -9,15 +9,20 @@ public class RagdollController : MonoBehaviour
     public GameObject[] limbs;
     public Quaternion[] defaultRot;
     public Vector3[] defaultPos;
+    private RagPose poseScript;
+    public RagPose[] ragPoses;
     public Transform[] tPose;
 
     // Start is called before the first frame update
     void Start()
     {
         moveScript = GameObject.FindGameObjectWithTag("Player").GetComponent<MovementScript>();
+        poseScript = GetComponent<RagPose>();
         limbs = GameObject.FindGameObjectsWithTag("Limb");
         defaultRot = new Quaternion[limbs.Length];
         defaultPos = new Vector3[limbs.Length];
+
+        ragPoses = new RagPose[10];
 
         InitializeDefaultPose();
     }
@@ -25,7 +30,10 @@ public class RagdollController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(poseScript.storingPose == true)
+        {
+            StorePose();
+        }
     }
 
     private void InitializeDefaultPose()
@@ -78,5 +86,32 @@ public class RagdollController : MonoBehaviour
                 else { Debug.LogError("Sprite skin was null. Couldnt turn off ragdoll"); }
             }
         }
+    }
+
+    private void StorePose()
+    {
+        int storeLocation = -1;
+        bool locationFound = false;
+
+        for (int i = 0; i < ragPoses.Length; i++)
+        {
+            if (ragPoses[i] == null && locationFound == false)
+            {
+                storeLocation = i;
+                locationFound = true;
+            }
+        }
+        if (locationFound && poseScript.poseName != null)
+        {
+            ragPoses[storeLocation] = poseScript.savedPose;
+            poseScript.storingPose = false;
+        }
+
+        else if (locationFound && poseScript.poseName == null)
+        {
+            Debug.LogWarning("Enter a name for the pose first.");
+        }
+
+        else { Debug.LogError("Could not find store location for pose"); }
     }
 }
