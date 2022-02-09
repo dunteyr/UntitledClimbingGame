@@ -240,6 +240,8 @@ public class MovementScript : MonoBehaviour
             {
                 playerMovable = false;
                 animScript.animationOn = false;
+                player.simulated = false;
+                handScript.handRigidBody.simulated = false;
                 ragdoll.transform.SetParent(null);
                 //make the hand invisible and turn off collider
                 handScript.gameObject.layer = 8;
@@ -309,6 +311,8 @@ public class MovementScript : MonoBehaviour
                 {
                     playerMovable = true;
                     animScript.animationOn = true;
+                    player.simulated = true;
+                    handScript.handRigidBody.simulated = true;
                     //make the hand visible and turn on collider
                     handScript.gameObject.layer = 0;
                     handScript.gameObject.GetComponent<CircleCollider2D>().enabled = true;
