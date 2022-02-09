@@ -11,6 +11,7 @@ public class MovementScript : MonoBehaviour
     private CameraPlayerBehavior camScript;
     private PlayerAnimation animScript;
     private CheckpointManager checkpointMngr;
+    private RagdollController rag;
 
     public Rigidbody2D player;
     private CapsuleCollider2D playerCollider;
@@ -59,6 +60,7 @@ public class MovementScript : MonoBehaviour
         animScript = GetComponent<PlayerAnimation>();
         camScript = GetComponent<CameraPlayerBehavior>();
         checkpointMngr = GameObject.FindGameObjectWithTag("CheckpointManager").GetComponent<CheckpointManager>();
+        rag = GameObject.FindGameObjectWithTag("Ragdoll").GetComponent<RagdollController>();
 
         playerCollider = GetComponent<CapsuleCollider2D>();
         playerToHandJoint = GetComponent<HingeJoint2D>();
@@ -245,7 +247,7 @@ public class MovementScript : MonoBehaviour
                 //player.gameObject.SetActive(false);
 
                 //Sets all the limbs to be ragdolled (Affected by gravity and non animated)
-                ConfigureLimbs(ragdollOn);
+                rag.ConfigureLimbs(ragdollOn);
                 //applies force to ragdoll (collision data is the collision of the last fall damage)
                 DeathForce(lastFallCollision);
 
@@ -312,7 +314,7 @@ public class MovementScript : MonoBehaviour
                     handScript.gameObject.GetComponent<CircleCollider2D>().enabled = true;
 
                     //Sets every limb to non ragdoll
-                    ConfigureLimbs(false);
+                    rag.ConfigureLimbs(false);
 
                     //make sure hand cant be ripped off
                     playerToHandJoint.breakForce = Mathf.Infinity;

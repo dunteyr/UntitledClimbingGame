@@ -212,6 +212,8 @@ MonoBehaviour:
   ground_Check: {fileID: 4437752474646629563}
   playerToHandJoint: {fileID: 0}
   ragdoll: {fileID: 0}
+  defaultLimbRot: []
+  defaultLimbPos: []
   torque: 0.5
   horizontalInput: 0
   jumpInput: 0
@@ -633,6 +635,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RagdollRigged
       objectReference: {fileID: 0}
+    - target: {fileID: 1721713138372418594, guid: 3363a0d9c5609bb4b9595a3beae3b096, type: 3}
+      propertyPath: m_TagString
+      value: Ragdoll
+      objectReference: {fileID: 0}
     - target: {fileID: 1731806677364581802, guid: 3363a0d9c5609bb4b9595a3beae3b096, type: 3}
       propertyPath: m_Bounds.m_Center.x
       value: -0.0016459227
@@ -856,3 +862,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 517026852678976577, guid: 3363a0d9c5609bb4b9595a3beae3b096, type: 3}
   m_PrefabInstance: {fileID: 399654390}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1721713138176205268 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1721713138372418594, guid: 3363a0d9c5609bb4b9595a3beae3b096, type: 3}
+  m_PrefabInstance: {fileID: 399654390}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2925813103729436841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721713138176205268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b708313d095150149a679e71e7fe507e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  limbs: []
+  defaultPose: []
+  tPose: []
