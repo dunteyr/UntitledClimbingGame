@@ -372,7 +372,7 @@ public class MovementScript : MonoBehaviour
                     limbs[i].GetComponent<SpriteSkin>().enabled = true;
 
                     //Setting limbs back to their tpose positions
-                    limbs[i].transform.rotation = defaultLimbRot[i];
+                    limbs[i].transform.localRotation = defaultLimbRot[i];
                     limbs[i].transform.localPosition = defaultLimbPos[i];
 
                 }
@@ -385,7 +385,8 @@ public class MovementScript : MonoBehaviour
     {
         for (int i = 0; i < limbs.Length; i++)
         {
-            defaultLimbRot[i] = limbs[i].transform.rotation;
+            defaultLimbRot[i] = limbs[i].transform.localRotation;
+
             defaultLimbPos[i] = limbs[i].transform.localPosition;
         }
     }
