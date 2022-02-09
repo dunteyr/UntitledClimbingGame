@@ -37,6 +37,7 @@ public class RagdollController : MonoBehaviour
         }
     }
 
+    //Sets all limbs to be affected by physics. Also resets them to default pose when turned off
     public void ConfigureLimbs(bool ragdollOn = true)
     {
         if (ragdollOn)
@@ -73,9 +74,6 @@ public class RagdollController : MonoBehaviour
                     //Setting limbs back to their tpose positions
                     limbs[i].transform.localRotation = defaultRot[i];
                     limbs[i].transform.localPosition = defaultPos[i];
-
-                    Debug.Log(defaultRot[i] + " " + defaultPos[i]);
-
                 }
                 else { Debug.LogError("Sprite skin was null. Couldnt turn off ragdoll"); }
             }
