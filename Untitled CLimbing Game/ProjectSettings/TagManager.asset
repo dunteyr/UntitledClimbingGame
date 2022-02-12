@@ -28,6 +28,7 @@ TagManager:
   - FarMountains
   - CloseMountains
   - Limb
+  - Ragdoll
   layers:
   - Default
   - TransparentFX

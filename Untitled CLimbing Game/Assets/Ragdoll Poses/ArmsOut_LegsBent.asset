@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50131483b3b63cb4aa7d1a85985a2338, type: 3}
+  m_Name: ArmsOut_LegsBent
+  m_EditorClassIdentifier: 
+  poseName: ArmsOut_LegsBent
+  limbRotation:
+  - {x: 0, y: 0, z: 0, w: 0}
+  - {x: -0, y: -0, z: 0.017320767, w: 0.99985003}
+  - {x: -0, y: -0, z: 0.14942297, w: 0.98877335}
+  - {x: -0, y: -0, z: 0.068247974, w: 0.99766845}
+  - {x: -0, y: -0, z: 0.020565318, w: 0.9997886}
+  - {x: -0, y: -0, z: -0.22534919, w: 0.9742781}
+  - {x: -0, y: -0, z: 0.5016358, w: 0.865079}
+  - {x: -0, y: -0, z: 0.27742034, w: 0.9607487}
+  - {x: -0, y: -0, z: -0.7535578, w: 0.6573816}
+  - {x: -0, y: -0, z: -0.30378145, w: 0.95274174}
+  - {x: -0, y: -0, z: 0.7622218, w: 0.647316}
+  limbPosition:
+  - {x: 0, y: 0, z: 0}
+  - {x: -0.016719252, y: 0.36041105, z: 0}
+  - {x: -0.06594198, y: 0.41681874, z: 0}
+  - {x: -0.35832116, y: 0.11398708, z: 0}
+  - {x: -0.40246814, y: -0.0078090387, z: 0}
+  - {x: 0.35790366, y: 0.03817791, z: 0}
+  - {x: 0.30756223, y: 0.16492043, z: 0}
+  - {x: 0.24228781, y: -0.27142355, z: 0}
+  - {x: -0.18509823, y: -0.22218026, z: 0}
+  - {x: -0.2529052, y: -0.2630454, z: 0}
+  - {x: 0.19021358, y: -0.25460154, z: 0}
