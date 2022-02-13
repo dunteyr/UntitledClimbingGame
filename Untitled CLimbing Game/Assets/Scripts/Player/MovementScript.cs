@@ -25,6 +25,8 @@ public class MovementScript : MonoBehaviour
 
     private float handBreakForce = 20;
     public Collision2D lastFallCollision;
+    public Vector3 lastLivingVelocity;
+    public bool livingRagdoll;
 
     private CompositeCollider2D terrainCollider;
 
@@ -65,12 +67,12 @@ public class MovementScript : MonoBehaviour
         playerCollider = GetComponent<CapsuleCollider2D>();
         playerToHandJoint = GetComponent<HingeJoint2D>();
 
+        livingRagdoll = false;
         ragdoll = GetComponentInChildren<Animator>().gameObject;
         limbs = GameObject.FindGameObjectsWithTag("Limb");
         defaultLimbRot = new Quaternion[limbs.Length];
         defaultLimbPos = new Vector3[limbs.Length];
         //Sets the limbs' default positions
-        InitializeLimbPositions();
     }
 
     // Update is called once per frame
@@ -226,7 +228,7 @@ public class MovementScript : MonoBehaviour
         }
     }
 
-    public void SetRagdoll(bool ragdollOn, bool ragdollLetGo = false)
+    public void SetRagdoll(bool ragdollOn, bool ragdollLetGo = false, bool abilityMenuRagdoll = false)
     {
         if (ragdollOn)
         {
@@ -236,7 +238,7 @@ public class MovementScript : MonoBehaviour
             playerToHandJoint.enabled = true;
 
             //if ragdoll is on while player is dead, dont let the player add forces to the body
-            if (playerHealth.playerIsDead)
+            if (playerHealth.playerIsDead || abilityMenuRagdoll)
             {
                 playerMovable = false;
                 animScript.animationOn = false;
@@ -250,9 +252,21 @@ public class MovementScript : MonoBehaviour
 
                 //Sets all the limbs to be ragdolled (Affected by gravity and non animated)
                 rag.ConfigureLimbs(ragdollOn);
-                //applies force to ragdoll (collision data is the collision of the last fall damage)
-                DeathForce(lastFallCollision);
 
+                //Only executes if player is ragdolled from death, not the ragdoll ability
+                if(abilityMenuRagdoll == false)
+                {
+                    //applies force to dead ragdoll (collision data is the collision of the last fall damage)
+                    DeathForce(lastFallCollision);
+                }
+                else if(abilityMenuRagdoll) 
+                {
+                    if(playerHealth.playerIsDead == false)
+                    {
+                        livingRagdoll = true;
+                    }
+                }
+                
                 //allow hand to be ripped off if player is dead
                 playerToHandJoint.breakForce = handBreakForce;
             }
@@ -299,7 +313,10 @@ public class MovementScript : MonoBehaviour
 
         else if(ragdollOn == false)
         {
-            //player.gameObject.SetActive(true);
+            //if the player is alive and ragdolled when SetRagdoll is called,
+            //the player controller needs to be set to ragdoll position
+            if (livingRagdoll) { livingRagdoll = false; AttachRagToPlayer(true); }
+
             StartCoroutine(FixPlayerRotation());
 
             //if the hand is still attached to the body
@@ -345,14 +362,28 @@ public class MovementScript : MonoBehaviour
     }
 
     //Player rig dettaches from player controller on ragdoll. this function reattaches them. (To respawn correctly)
-    public void AttachRagToPlayer()
+    public void AttachRagToPlayer(bool playerToRag = false)
     {
-        //sets the ragdoll parent to the player position
-        ragdoll.transform.SetPositionAndRotation(player.gameObject.transform.position, player.gameObject.transform.rotation); 
-        //sets the pelvis to the player position (And the ragdoll parent position)
-        ragdoll.transform.Find("Pelvis").SetPositionAndRotation(player.gameObject.transform.position, player.gameObject.transform.rotation);
-        //sets the ragdoll parents' parent to be the player controller
-        ragdoll.transform.SetParent(player.gameObject.transform);
+        //player to rag position
+        if (playerToRag)
+        {
+            //set player controller to the ragdoll position
+            player.gameObject.transform.SetPositionAndRotation(ragdoll.transform.position, ragdoll.transform.rotation);
+            //make ragdoll child of player controller
+            ragdoll.transform.SetParent(player.gameObject.transform);
+        }
+
+        //rag to player position
+        else
+        {
+            //sets the ragdoll to the player position
+            ragdoll.transform.SetPositionAndRotation(player.gameObject.transform.position, player.gameObject.transform.rotation);
+            //sets the pelvis to the player position (And the ragdoll position)
+            ragdoll.transform.Find("Pelvis").SetPositionAndRotation(player.gameObject.transform.position, player.gameObject.transform.rotation);
+            //sets the ragdoll parents' parent to be the player controller
+            ragdoll.transform.SetParent(player.gameObject.transform);
+        }
+        
     }
 
     //This function puts a force on the player ragdoll after death using the collision of the previous fall damage. Called in SetRagdoll()
