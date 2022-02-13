@@ -73,6 +73,8 @@ public class RagdollController : MonoBehaviour
             {
                 if (limbs[i].GetComponent<Rigidbody2D>() != null)
                 {
+                    //force setting limbs velocities to 0
+                    limbs[i].GetComponent<Rigidbody2D>().velocity = Vector3.zero;
                     limbs[i].GetComponent<Rigidbody2D>().simulated = false;
                 }
                 else { Debug.LogError("A limb on the ragdoll is missing a rigidbody. Cant make it ragdoll."); }
