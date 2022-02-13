@@ -214,6 +214,8 @@ MonoBehaviour:
   ragdoll: {fileID: 0}
   defaultLimbRot: []
   defaultLimbPos: []
+  lastLivingVelocity: {x: 0, y: 0, z: 0}
+  livingRagdoll: 0
   torque: 0.5
   horizontalInput: 0
   jumpInput: 0
@@ -887,6 +889,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7a60ecfcbf2cae64b90ae9318dfde8c9, type: 2}
   - {fileID: 11400000, guid: c34b11e0fe9b3204ca490d3327211a3f, type: 2}
   - {fileID: 11400000, guid: f45f592e1301b35438a8acae14c68468, type: 2}
+  - {fileID: 11400000, guid: 514b5db1215096c41ac5b78c6380ff8f, type: 2}
   storedPose: {fileID: 0}
   limbs: []
   defaultRot: []

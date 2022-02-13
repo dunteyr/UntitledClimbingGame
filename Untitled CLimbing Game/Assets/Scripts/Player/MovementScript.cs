@@ -428,7 +428,7 @@ public class MovementScript : MonoBehaviour
         livingRagdoll = true;
 
         //adds force to ragdoll limbs (a fraction of the force for every limb)
-        rag.LimbForce(lastLivingVelocity, true);
+        rag.LimbForce(lastLivingVelocity, true, true);
 
         lastLivingVelocity = Vector3.zero;
     }

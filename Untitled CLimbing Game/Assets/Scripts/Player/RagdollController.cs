@@ -92,8 +92,10 @@ public class RagdollController : MonoBehaviour
         }
     }
 
-    public void LimbForce(Vector3 force, bool allLimbs)
+    public void LimbForce(Vector3 force, bool allLimbs, bool useRandomness = false)
     {
+        float randForce;
+
         Rigidbody2D pelvis = transform.Find("Pelvis").gameObject.GetComponent<Rigidbody2D>();
 
         //adds some of the force to all limbs
@@ -101,13 +103,24 @@ public class RagdollController : MonoBehaviour
         {
             for (int i = 0; i < limbs.Length; i++)
             {
+                //finds a random force to add to each limb
+                if (useRandomness) { randForce = Random.Range(-0.3f, 0.3f); }
+                else { randForce = 0f; }
+
                 //adds a fraction of the force to every limb (force divided by the number of limbs)
-                limbs[i].GetComponent<Rigidbody2D>().AddForce(force / limbs.Length, ForceMode2D.Impulse);
+                limbs[i].GetComponent<Rigidbody2D>().AddForce(force / limbs.Length + new Vector3(randForce, randForce, 0), ForceMode2D.Impulse);
             }
         }
 
         //adds whole force to pelvis
-        else { pelvis.AddForce(force, ForceMode2D.Impulse); }
+        else 
+        {
+            //finds a random force to add to the pelvis
+            if (useRandomness) { randForce = Random.Range(-1f, 1f); }
+            else { randForce = 0f; }
+
+            pelvis.AddForce(force + new Vector3(randForce, randForce, 0), ForceMode2D.Impulse); 
+        }
     }
 
     [ContextMenu("Save Current Pose")]
