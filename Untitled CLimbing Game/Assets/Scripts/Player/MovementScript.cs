@@ -344,59 +344,6 @@ public class MovementScript : MonoBehaviour
         }
     }
 
-    public void ConfigureLimbs(bool ragdollOn = true)
-    {
-        if (ragdollOn)
-        {
-            for (int i = 0; i < limbs.Length; i++)
-            {
-                if (limbs[i].GetComponent<Rigidbody2D>() != null)
-                {
-                    limbs[i].GetComponent<Rigidbody2D>().simulated = true;
-                }
-                else { Debug.LogError("A limb on the ragdoll is missing a rigidbody. Cant make it ragdoll."); }
-
-                if (limbs[i].GetComponent<SpriteSkin>() != null)
-                {
-                    limbs[i].GetComponent<SpriteSkin>().enabled = false;
-                }
-            }
-        }
-
-        else if (ragdollOn == false)
-        {
-            for (int i = 0; i < limbs.Length; i++)
-            {
-                if (limbs[i].GetComponent<Rigidbody2D>() != null)
-                {
-                    limbs[i].GetComponent<Rigidbody2D>().simulated = false;                   
-                }
-                else { Debug.LogError("A limb on the ragdoll is missing a rigidbody. Cant make it ragdoll."); }
-
-                if (limbs[i].GetComponent<SpriteSkin>() != null)
-                {
-                    limbs[i].GetComponent<SpriteSkin>().enabled = true;
-
-                    //Setting limbs back to their tpose positions
-                    limbs[i].transform.localRotation = defaultLimbRot[i];
-                    limbs[i].transform.localPosition = defaultLimbPos[i];
-
-                }
-                else { Debug.LogError("Sprite skin was null. Couldnt turn off ragdoll"); }
-            }
-        }
-    }
-
-    private void InitializeLimbPositions()
-    {
-        for (int i = 0; i < limbs.Length; i++)
-        {
-            defaultLimbRot[i] = limbs[i].transform.localRotation;
-
-            defaultLimbPos[i] = limbs[i].transform.localPosition;
-        }
-    }
-
     //Player rig dettaches from player controller on ragdoll. this function reattaches them. (To respawn correctly)
     public void AttachRagToPlayer()
     {
