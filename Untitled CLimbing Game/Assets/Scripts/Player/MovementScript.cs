@@ -378,6 +378,8 @@ public class MovementScript : MonoBehaviour
             ragdoll.transform.SetParent(player.gameObject.transform);
             ragdoll.transform.localPosition = Vector3.zero;
             ragdoll.transform.localRotation = new Quaternion(0, 0, 0, 0);
+            //players velocity taken from ragdoll's velocity
+            player.velocity = pelvis.GetComponent<Rigidbody2D>().velocity;
         }
 
         //rag to player position
