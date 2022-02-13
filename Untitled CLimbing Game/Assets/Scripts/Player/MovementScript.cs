@@ -242,6 +242,8 @@ public class MovementScript : MonoBehaviour
             {
                 playerMovable = false;
                 animScript.animationOn = false;
+                //store the players velocity before turning it off
+                lastLivingVelocity = player.velocity;
                 player.simulated = false;
                 handScript.handRigidBody.simulated = false;
                 ragdoll.transform.SetParent(null);
@@ -259,11 +261,13 @@ public class MovementScript : MonoBehaviour
                     //applies force to dead ragdoll (collision data is the collision of the last fall damage)
                     DeathForce(lastFallCollision);
                 }
+
+                //this is if the ragdoll ability was turned on
                 else if(abilityMenuRagdoll) 
                 {
                     if(playerHealth.playerIsDead == false)
                     {
-                        livingRagdoll = true;
+                        LivingRagdoll();
                     }
                 }
                 
@@ -367,10 +371,13 @@ public class MovementScript : MonoBehaviour
         //player to rag position
         if (playerToRag)
         {
-            //set player controller to the ragdoll position
-            player.gameObject.transform.SetPositionAndRotation(ragdoll.transform.position, ragdoll.transform.rotation);
-            //make ragdoll child of player controller
+            GameObject pelvis = ragdoll.transform.Find("Pelvis").gameObject;
+            //set player controller to the pelvis position
+            player.gameObject.transform.SetPositionAndRotation(pelvis.transform.position, pelvis.transform.rotation);
+            //make ragdoll child of player controller and zero out ragdoll transform
             ragdoll.transform.SetParent(player.gameObject.transform);
+            ragdoll.transform.localPosition = Vector3.zero;
+            ragdoll.transform.localRotation = new Quaternion(0, 0, 0, 0);
         }
 
         //rag to player position
@@ -411,6 +418,21 @@ public class MovementScript : MonoBehaviour
             }
         }
 
+    }
+
+    //Called when the player enters ragdoll while alive. Gives the ragdoll the last velocity of the player
+    private void LivingRagdoll()
+    {
+        Debug.Log(lastLivingVelocity);
+        livingRagdoll = true;
+
+        //Get the ragdoll pelvis
+        Rigidbody2D pelvis = ragdoll.transform.Find("Pelvis").GetComponent<Rigidbody2D>();
+
+        //apply the force to the pelvis
+        pelvis.AddForce(lastLivingVelocity, ForceMode2D.Impulse);
+
+        lastLivingVelocity = Vector3.zero;
     }
 
     /* --- DEPRECATED --- */
