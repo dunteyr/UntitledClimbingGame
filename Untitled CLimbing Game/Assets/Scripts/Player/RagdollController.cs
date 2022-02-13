@@ -92,6 +92,24 @@ public class RagdollController : MonoBehaviour
         }
     }
 
+    public void LimbForce(Vector3 force, bool allLimbs)
+    {
+        Rigidbody2D pelvis = transform.Find("Pelvis").gameObject.GetComponent<Rigidbody2D>();
+
+        //adds some of the force to all limbs
+        if (allLimbs)
+        {
+            for (int i = 0; i < limbs.Length; i++)
+            {
+                //adds a fraction of the force to every limb (force divided by the number of limbs)
+                limbs[i].GetComponent<Rigidbody2D>().AddForce(force / limbs.Length, ForceMode2D.Impulse);
+            }
+        }
+
+        //adds whole force to pelvis
+        else { pelvis.AddForce(force, ForceMode2D.Impulse); }
+    }
+
     [ContextMenu("Save Current Pose")]
     private void SaveCurrentPose()
     {

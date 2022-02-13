@@ -425,14 +425,10 @@ public class MovementScript : MonoBehaviour
     //Called when the player enters ragdoll while alive. Gives the ragdoll the last velocity of the player
     private void LivingRagdoll()
     {
-        Debug.Log(lastLivingVelocity);
         livingRagdoll = true;
 
-        //Get the ragdoll pelvis
-        Rigidbody2D pelvis = ragdoll.transform.Find("Pelvis").GetComponent<Rigidbody2D>();
-
-        //apply the force to the pelvis
-        pelvis.AddForce(lastLivingVelocity, ForceMode2D.Impulse);
+        //adds force to ragdoll limbs (a fraction of the force for every limb)
+        rag.LimbForce(lastLivingVelocity, true);
 
         lastLivingVelocity = Vector3.zero;
     }
