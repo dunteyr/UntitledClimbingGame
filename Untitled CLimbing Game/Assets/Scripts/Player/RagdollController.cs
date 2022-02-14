@@ -73,6 +73,8 @@ public class RagdollController : MonoBehaviour
             {
                 if (limbs[i].GetComponent<Rigidbody2D>() != null)
                 {
+                    //force setting limbs velocities to 0
+                    limbs[i].GetComponent<Rigidbody2D>().velocity = Vector3.zero;
                     limbs[i].GetComponent<Rigidbody2D>().simulated = false;
                 }
                 else { Debug.LogError("A limb on the ragdoll is missing a rigidbody. Cant make it ragdoll."); }
@@ -82,11 +84,51 @@ public class RagdollController : MonoBehaviour
                     limbs[i].GetComponent<SpriteSkin>().enabled = true;
 
                     //Setting limbs back to their tpose positions
-                    limbs[i].transform.localRotation = defaultRot[i];
-                    limbs[i].transform.localPosition = defaultPos[i];
+                    //limbs[i].transform.localRotation = defaultRot[i];
+                    //limbs[i].transform.localPosition = defaultPos[i];
                 }
                 else { Debug.LogError("Sprite skin was null. Couldnt turn off ragdoll"); }
             }
+        }
+    }
+
+    public void SetPose(int poseIndex)
+    {
+        for (int i = 0; i < limbs.Length; i++)
+        {
+            limbs[i].transform.localRotation = ragPose[poseIndex].limbRotation[i];
+            limbs[i].transform.localPosition = ragPose[poseIndex].limbPosition[i];
+        }
+    }
+
+    public void LimbForce(Vector3 force, bool allLimbs, bool useRandomness = false)
+    {
+        float randForce;
+
+        Rigidbody2D pelvis = transform.Find("Pelvis").gameObject.GetComponent<Rigidbody2D>();
+
+        //adds some of the force to all limbs
+        if (allLimbs)
+        {
+            for (int i = 0; i < limbs.Length; i++)
+            {
+                //finds a random force to add to each limb
+                if (useRandomness) { randForce = Random.Range(-0.3f, 0.3f); }
+                else { randForce = 0f; }
+
+                //adds a fraction of the force to every limb (force divided by the number of limbs)
+                limbs[i].GetComponent<Rigidbody2D>().AddForce(force / limbs.Length + new Vector3(randForce, randForce, 0), ForceMode2D.Impulse);
+            }
+        }
+
+        //adds whole force to pelvis
+        else 
+        {
+            //finds a random force to add to the pelvis
+            if (useRandomness) { randForce = Random.Range(-1f, 1f); }
+            else { randForce = 0f; }
+
+            pelvis.AddForce(force + new Vector3(randForce, randForce, 0), ForceMode2D.Impulse); 
         }
     }
 

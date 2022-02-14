@@ -138,7 +138,7 @@ public class AbilityMenuScript : MonoBehaviour
         if (ragdollActive == false)
         {
             Debug.Log("Ragdoll Enabled");
-            movementScript.SetRagdoll(true, true);
+            movementScript.SetRagdoll(true, true, true);
             ragdollActive = true;
         }
 

@@ -25,6 +25,8 @@ public class MovementScript : MonoBehaviour
 
     private float handBreakForce = 20;
     public Collision2D lastFallCollision;
+    public Vector3 lastLivingVelocity;
+    public bool livingRagdoll;
 
     private CompositeCollider2D terrainCollider;
 
@@ -65,12 +67,12 @@ public class MovementScript : MonoBehaviour
         playerCollider = GetComponent<CapsuleCollider2D>();
         playerToHandJoint = GetComponent<HingeJoint2D>();
 
+        livingRagdoll = false;
         ragdoll = GetComponentInChildren<Animator>().gameObject;
         limbs = GameObject.FindGameObjectsWithTag("Limb");
         defaultLimbRot = new Quaternion[limbs.Length];
         defaultLimbPos = new Vector3[limbs.Length];
         //Sets the limbs' default positions
-        InitializeLimbPositions();
     }
 
     // Update is called once per frame
@@ -226,7 +228,7 @@ public class MovementScript : MonoBehaviour
         }
     }
 
-    public void SetRagdoll(bool ragdollOn, bool ragdollLetGo = false)
+    public void SetRagdoll(bool ragdollOn, bool ragdollLetGo = false, bool abilityMenuRagdoll = false)
     {
         if (ragdollOn)
         {
@@ -236,10 +238,12 @@ public class MovementScript : MonoBehaviour
             playerToHandJoint.enabled = true;
 
             //if ragdoll is on while player is dead, dont let the player add forces to the body
-            if (playerHealth.playerIsDead)
+            if (playerHealth.playerIsDead || abilityMenuRagdoll)
             {
                 playerMovable = false;
                 animScript.animationOn = false;
+                //store the players velocity before turning it off
+                lastLivingVelocity = player.velocity;
                 player.simulated = false;
                 handScript.handRigidBody.simulated = false;
                 ragdoll.transform.SetParent(null);
@@ -250,9 +254,24 @@ public class MovementScript : MonoBehaviour
 
                 //Sets all the limbs to be ragdolled (Affected by gravity and non animated)
                 rag.ConfigureLimbs(ragdollOn);
-                //applies force to ragdoll (collision data is the collision of the last fall damage)
-                DeathForce(lastFallCollision);
+                rag.SetPose(7);
 
+                //Only executes if player is ragdolled from death, not the ragdoll ability
+                if(abilityMenuRagdoll == false)
+                {
+                    //applies force to dead ragdoll (collision data is the collision of the last fall damage)
+                    DeathForce(lastFallCollision);
+                }
+
+                //this is if the ragdoll ability was turned on
+                else if(abilityMenuRagdoll) 
+                {
+                    if(playerHealth.playerIsDead == false)
+                    {
+                        LivingRagdoll();
+                    }
+                }
+                
                 //allow hand to be ripped off if player is dead
                 playerToHandJoint.breakForce = handBreakForce;
             }
@@ -299,7 +318,10 @@ public class MovementScript : MonoBehaviour
 
         else if(ragdollOn == false)
         {
-            //player.gameObject.SetActive(true);
+            //if the player is alive and ragdolled when SetRagdoll is called,
+            //the player controller needs to be set to ragdoll position
+            if (livingRagdoll) { livingRagdoll = false; AttachRagToPlayer(true); }
+
             StartCoroutine(FixPlayerRotation());
 
             //if the hand is still attached to the body
@@ -319,6 +341,7 @@ public class MovementScript : MonoBehaviour
 
                     //Sets every limb to non ragdoll
                     rag.ConfigureLimbs(false);
+                    rag.SetPose(7);
 
                     //make sure hand cant be ripped off
                     playerToHandJoint.breakForce = Mathf.Infinity;
@@ -344,68 +367,34 @@ public class MovementScript : MonoBehaviour
         }
     }
 
-    public void ConfigureLimbs(bool ragdollOn = true)
-    {
-        if (ragdollOn)
-        {
-            for (int i = 0; i < limbs.Length; i++)
-            {
-                if (limbs[i].GetComponent<Rigidbody2D>() != null)
-                {
-                    limbs[i].GetComponent<Rigidbody2D>().simulated = true;
-                }
-                else { Debug.LogError("A limb on the ragdoll is missing a rigidbody. Cant make it ragdoll."); }
-
-                if (limbs[i].GetComponent<SpriteSkin>() != null)
-                {
-                    limbs[i].GetComponent<SpriteSkin>().enabled = false;
-                }
-            }
-        }
-
-        else if (ragdollOn == false)
-        {
-            for (int i = 0; i < limbs.Length; i++)
-            {
-                if (limbs[i].GetComponent<Rigidbody2D>() != null)
-                {
-                    limbs[i].GetComponent<Rigidbody2D>().simulated = false;                   
-                }
-                else { Debug.LogError("A limb on the ragdoll is missing a rigidbody. Cant make it ragdoll."); }
-
-                if (limbs[i].GetComponent<SpriteSkin>() != null)
-                {
-                    limbs[i].GetComponent<SpriteSkin>().enabled = true;
-
-                    //Setting limbs back to their tpose positions
-                    limbs[i].transform.localRotation = defaultLimbRot[i];
-                    limbs[i].transform.localPosition = defaultLimbPos[i];
-
-                }
-                else { Debug.LogError("Sprite skin was null. Couldnt turn off ragdoll"); }
-            }
-        }
-    }
-
-    private void InitializeLimbPositions()
-    {
-        for (int i = 0; i < limbs.Length; i++)
-        {
-            defaultLimbRot[i] = limbs[i].transform.localRotation;
-
-            defaultLimbPos[i] = limbs[i].transform.localPosition;
-        }
-    }
-
     //Player rig dettaches from player controller on ragdoll. this function reattaches them. (To respawn correctly)
-    public void AttachRagToPlayer()
+    public void AttachRagToPlayer(bool playerToRag = false)
     {
-        //sets the ragdoll parent to the player position
-        ragdoll.transform.SetPositionAndRotation(player.gameObject.transform.position, player.gameObject.transform.rotation); 
-        //sets the pelvis to the player position (And the ragdoll parent position)
-        ragdoll.transform.Find("Pelvis").SetPositionAndRotation(player.gameObject.transform.position, player.gameObject.transform.rotation);
-        //sets the ragdoll parents' parent to be the player controller
-        ragdoll.transform.SetParent(player.gameObject.transform);
+        //player to rag position
+        if (playerToRag)
+        {
+            GameObject pelvis = ragdoll.transform.Find("Pelvis").gameObject;
+            //set player controller to the pelvis position
+            player.gameObject.transform.SetPositionAndRotation(pelvis.transform.position, pelvis.transform.rotation);
+            //make ragdoll child of player controller and zero out ragdoll transform
+            ragdoll.transform.SetParent(player.gameObject.transform);
+            ragdoll.transform.localPosition = Vector3.zero;
+            ragdoll.transform.localRotation = new Quaternion(0, 0, 0, 0);
+            //players velocity taken from ragdoll's velocity
+            player.velocity = pelvis.GetComponent<Rigidbody2D>().velocity;
+        }
+
+        //rag to player position
+        else
+        {
+            //sets the ragdoll to the player position
+            ragdoll.transform.SetPositionAndRotation(player.gameObject.transform.position, player.gameObject.transform.rotation);
+            //sets the pelvis to the player position (And the ragdoll position)
+            ragdoll.transform.Find("Pelvis").SetPositionAndRotation(player.gameObject.transform.position, player.gameObject.transform.rotation);
+            //sets the ragdoll parents' parent to be the player controller
+            ragdoll.transform.SetParent(player.gameObject.transform);
+        }
+        
     }
 
     //This function puts a force on the player ragdoll after death using the collision of the previous fall damage. Called in SetRagdoll()
@@ -433,6 +422,17 @@ public class MovementScript : MonoBehaviour
             }
         }
 
+    }
+
+    //Called when the player enters ragdoll while alive. Gives the ragdoll the last velocity of the player
+    private void LivingRagdoll()
+    {
+        livingRagdoll = true;
+
+        //adds force to ragdoll limbs (a fraction of the force for every limb)
+        rag.LimbForce(lastLivingVelocity, true, true);
+
+        lastLivingVelocity = Vector3.zero;
     }
 
     /* --- DEPRECATED --- */
