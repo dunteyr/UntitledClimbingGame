@@ -254,6 +254,7 @@ public class MovementScript : MonoBehaviour
 
                 //Sets all the limbs to be ragdolled (Affected by gravity and non animated)
                 rag.ConfigureLimbs(ragdollOn);
+                rag.SetPose(7);
 
                 //Only executes if player is ragdolled from death, not the ragdoll ability
                 if(abilityMenuRagdoll == false)
@@ -340,6 +341,7 @@ public class MovementScript : MonoBehaviour
 
                     //Sets every limb to non ragdoll
                     rag.ConfigureLimbs(false);
+                    rag.SetPose(7);
 
                     //make sure hand cant be ripped off
                     playerToHandJoint.breakForce = Mathf.Infinity;

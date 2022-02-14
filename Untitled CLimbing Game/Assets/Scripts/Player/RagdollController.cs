@@ -84,11 +84,20 @@ public class RagdollController : MonoBehaviour
                     limbs[i].GetComponent<SpriteSkin>().enabled = true;
 
                     //Setting limbs back to their tpose positions
-                    limbs[i].transform.localRotation = defaultRot[i];
-                    limbs[i].transform.localPosition = defaultPos[i];
+                    //limbs[i].transform.localRotation = defaultRot[i];
+                    //limbs[i].transform.localPosition = defaultPos[i];
                 }
                 else { Debug.LogError("Sprite skin was null. Couldnt turn off ragdoll"); }
             }
+        }
+    }
+
+    public void SetPose(int poseIndex)
+    {
+        for (int i = 0; i < limbs.Length; i++)
+        {
+            limbs[i].transform.localRotation = ragPose[poseIndex].limbRotation[i];
+            limbs[i].transform.localPosition = ragPose[poseIndex].limbPosition[i];
         }
     }
 
