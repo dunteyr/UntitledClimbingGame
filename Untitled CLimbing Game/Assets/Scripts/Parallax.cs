@@ -8,12 +8,6 @@ public class Parallax : MonoBehaviour
     private GameObject mainCamera;
     private GameObject farMountains;
     private GameObject closeMountains;
-    /*
-    private Vector3 playerStartPos;
-    private Vector3 playerCurrentPos;
-    private Vector3 playerPrevPos;
-    private Vector3 playerPosDiff;
-    */
 
     private Vector3 camCurrentPos;
     private Vector3 camPrevPos;
