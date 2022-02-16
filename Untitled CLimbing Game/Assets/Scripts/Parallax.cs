@@ -81,7 +81,7 @@ public class Parallax : MonoBehaviour
                 float layerIncrement = speedIncrement * (i - 1);
 
                 //layer movement. each layer is moved based on the camera movement, the fastest and slowest speed, and layer position
-                layers[i].transform.position -= new Vector3(camPosDiff.x * farthestLayerSpd * layerIncrement, camPosDiff.y * farthestLayerSpd * layerIncrement, 0);
+                layers[i].transform.position -= new Vector3(camPosDiff.x * (farthestLayerSpd + layerIncrement), camPosDiff.y * (farthestLayerSpd + layerIncrement), 0);
             }
    
         }
