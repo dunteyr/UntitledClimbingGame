@@ -29,6 +29,7 @@ TagManager:
   - CloseMountains
   - Limb
   - Ragdoll
+  - Background
   layers:
   - Default
   - TransparentFX
