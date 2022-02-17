@@ -33,7 +33,7 @@ public class Parallax : MonoBehaviour
         closeMountains = GameObject.FindGameObjectWithTag("CloseMountains");
 
         background = GameObject.FindGameObjectWithTag("Background");
-        layers = background.GetComponentsInChildren<SpriteRenderer>();
+        layers = GetComponentsInChildren<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -74,16 +74,12 @@ public class Parallax : MonoBehaviour
 
         for (int i = 0; i < layers.Length; i++)
         {
-            //the first layer in the array is the sky which shouldnt move
-            if(i != 0)
-            {
-                //numer of increments to add for each layer. Layer 1 needs 0 increments, layer 2 needs 1 increment, etc...
-                float layerIncrement = speedIncrement * (i - 1);
+            //numer of increments to add for each layer. Layer 0 needs 0, layer 1 needs 1, etc...
+            float layerIncrement = speedIncrement * i;
 
-                //layer movement. each layer is moved based on the camera movement, the fastest and slowest speed, and layer position
-                layers[i].transform.position -= new Vector3(camPosDiff.x * (farthestLayerSpd + layerIncrement), camPosDiff.y * (farthestLayerSpd + layerIncrement), 0);
-            }
-   
+            //layer movement. each layer is moved based on the camera movement, the fastest and slowest speed, and layer position
+            layers[i].transform.position -= new Vector3(camPosDiff.x * (farthestLayerSpd + layerIncrement), camPosDiff.y * (farthestLayerSpd + layerIncrement), 0);
+
         }
 
         //set the previous position for the next update to use
