@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Parallax : MonoBehaviour
 {
-    private GameObject mainCamera;
+    private Camera mainCamera;
     private GameObject farMountains;
     private GameObject closeMountains;
 
@@ -23,10 +23,13 @@ public class Parallax : MonoBehaviour
     [SerializeField]
     private float farthestLayerSpd = 0.2f;
 
+    private Vector3 leftBounds;
+    private Vector3 rightBounds;
+
     // Start is called before the first frame update
     void Start()
     {
-        mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
         //playerStartPos = player.transform.position;
         farMountains = GameObject.FindGameObjectWithTag("FarMountains");
@@ -39,6 +42,11 @@ public class Parallax : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //leftmost view of cam (0 for x, half the height for y)
+        leftBounds = mainCamera.ScreenToWorldPoint(new Vector3 (0, mainCamera.pixelHeight/2, 0 ));
+        //rightmost view of cam (width of view for x, half of height for y)
+        rightBounds = mainCamera.ScreenToWorldPoint(new Vector3(mainCamera.pixelWidth, mainCamera.pixelHeight / 2, 0));
+
         ParallaxEffect();
         //OldParallax();
     }
@@ -80,9 +88,31 @@ public class Parallax : MonoBehaviour
             //layer movement. each layer is moved based on the camera movement, the fastest and slowest speed, and layer position
             layers[i].transform.position -= new Vector3(camPosDiff.x * (farthestLayerSpd + layerIncrement), camPosDiff.y * (farthestLayerSpd + layerIncrement), 0);
 
+            TileLayer(i);
+
         }
 
         //set the previous position for the next update to use
         camPrevPos = camCurrentPos;
+    }
+
+    private void TileLayer(int layer)
+    {
+        /*
+        Since the layers are locked to the camera, the bounds.extents give the position without accounting for camera movement
+        Adding the cam position gives you an accurate world position for the layer
+        */
+
+        //top right corner of layer
+        Vector3 layerPosition = layers[layer].bounds.extents + mainCamera.transform.position;
+
+
+        if(layerPosition.x <= rightBounds.x)
+        {
+            GameObject copiedLayer = Instantiate(layers[layer].gameObject);
+            copiedLayer
+        }
+
+        
     }
 }
