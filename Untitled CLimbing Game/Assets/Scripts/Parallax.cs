@@ -49,7 +49,6 @@ public class Parallax : MonoBehaviour
         //rightmost view of cam in pixels
         rightBounds = mainCamera.pixelWidth;
 
-        Debug.Log(mainCamera.WorldToScreenPoint(layers[0].bounds.extents) + " " + mainCamera.pixelWidth);
         ParallaxEffect();
         //OldParallax();
     }
