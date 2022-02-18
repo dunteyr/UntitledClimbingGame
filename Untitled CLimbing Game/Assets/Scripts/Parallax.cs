@@ -25,7 +25,7 @@ public class Parallax : MonoBehaviour
     private float farthestLayerSpd = 0.2f;
 
     private Vector3 leftBounds;
-    private Vector3 rightBounds;
+    private int rightBounds;
 
     // Start is called before the first frame update
     void Start()
@@ -46,10 +46,10 @@ public class Parallax : MonoBehaviour
     {
         //leftmost view of cam (0 for x, half the height for y)
         leftBounds = mainCamera.ScreenToWorldPoint(new Vector3 (0, mainCamera.pixelHeight/2, 0 ));
-        //rightmost view of cam (width of view for x, half of height for y)
-        rightBounds = mainCamera.ScreenToWorldPoint(new Vector3(mainCamera.pixelWidth, mainCamera.pixelHeight / 2, 0));
+        //rightmost view of cam in pixels
+        rightBounds = mainCamera.pixelWidth;
 
-        Debug.Log(layers[0].bounds.extents + mainCamera.transform.position + " " + rightBounds);
+        Debug.Log(mainCamera.WorldToScreenPoint(layers[0].bounds.extents) + " " + mainCamera.pixelWidth);
         ParallaxEffect();
         //OldParallax();
     }
@@ -106,10 +106,10 @@ public class Parallax : MonoBehaviour
         Adding the cam position gives you an accurate world position for the layer
         */
 
-        //top right corner of layer
-        Vector3 layerPosition = layers[layer].bounds.extents + mainCamera.transform.position;
+        //pixel coordinates for the top right of layer
+        Vector3 layerPosition = mainCamera.WorldToScreenPoint(layers[layer].bounds.extents);
 
-        if(layerPosition.x >= rightBounds.x)
+        if (layerPosition.x <= rightBounds)
         {
             //check if there is already a duplicate
             if(duplicateLayers[layer] == null)
@@ -130,9 +130,15 @@ public class Parallax : MonoBehaviour
             duplicateLayers[layer].transform.localScale = new Vector3(1, 1, 1);
 
             //offset the new layer 
-            duplicateLayers[layer].transform.position = dupLayerPos;
-            
-            
+            duplicateLayers[layer].transform.position = dupLayerPos;   
+        }
+
+        else if( layerPosition.x > rightBounds)
+        {
+            if(duplicateLayers[layer] != null)
+            {
+                Destroy(duplicateLayers[layer]);
+            }
         }
 
         
