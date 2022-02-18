@@ -10,6 +10,7 @@ public class Parallax : MonoBehaviour
 
     public GameObject background;
     public SpriteRenderer[] layers;
+    public SpriteRenderer[] duplicateLayers;
 
     private Vector3 camCurrentPos;
     private Vector3 camPrevPos;
@@ -37,6 +38,7 @@ public class Parallax : MonoBehaviour
 
         background = GameObject.FindGameObjectWithTag("Background");
         layers = GetComponentsInChildren<SpriteRenderer>();
+        duplicateLayers = new SpriteRenderer[layers.Length];
     }
 
     // Update is called once per frame
@@ -47,6 +49,7 @@ public class Parallax : MonoBehaviour
         //rightmost view of cam (width of view for x, half of height for y)
         rightBounds = mainCamera.ScreenToWorldPoint(new Vector3(mainCamera.pixelWidth, mainCamera.pixelHeight / 2, 0));
 
+        Debug.Log(layers[0].bounds.extents + mainCamera.transform.position + " " + rightBounds);
         ParallaxEffect();
         //OldParallax();
     }
@@ -106,11 +109,30 @@ public class Parallax : MonoBehaviour
         //top right corner of layer
         Vector3 layerPosition = layers[layer].bounds.extents + mainCamera.transform.position;
 
-
-        if(layerPosition.x <= rightBounds.x)
+        if(layerPosition.x >= rightBounds.x)
         {
-            GameObject copiedLayer = Instantiate(layers[layer].gameObject);
-            copiedLayer
+            //check if there is already a duplicate
+            if(duplicateLayers[layer] == null)
+            {
+                GameObject copiedLayer = Instantiate(layers[layer].gameObject);
+                copiedLayer.transform.parent = layers[layer].transform.parent;
+                duplicateLayers[layer] = copiedLayer.GetComponent<SpriteRenderer>();
+            }
+
+            //setting up the position of the new layer
+            Vector3 dupLayerPos = new Vector3();
+            //new x pos is the original layer's x pos plus the size of the layer
+            dupLayerPos.x = layers[layer].transform.position.x + layers[layer].bounds.size.x - 0.025f; //giving layers a slight overlap
+            dupLayerPos.y = layers[layer].transform.position.y;
+            dupLayerPos.z = layers[layer].transform.position.z;
+
+            //set local scale
+            duplicateLayers[layer].transform.localScale = new Vector3(1, 1, 1);
+
+            //offset the new layer 
+            duplicateLayers[layer].transform.position = dupLayerPos;
+            
+            
         }
 
         
